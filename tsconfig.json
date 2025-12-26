@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "paths": {
+      "e2e/*": ["./e2e/*"]
+    },
+    "noImplicitAny": true
+  },
+  "noEmit": true
+}

@@ -1,0 +1,27 @@
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: juice-shop
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/nodejs/bin/node",
+          "-e",
+          "require('http').get('http://localhost:3000', (res) => { if (res.statusCode >= 200 && res.statusCode < 400) process.exit(0); else process.exit(1); }).on('error', (err) => process.exit(1));",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  playwright:
+    build: .
+    container_name: playwright-runner
+    depends_on:
+      juice-shop:
+        condition: service_healthy
+    environment:
+      - CI=true
+    command: npm run test-all-allure
