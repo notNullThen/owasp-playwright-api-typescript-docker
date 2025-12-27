@@ -6,8 +6,10 @@
   "scripts": {
     "test-all": "npx playwright test",
     "test-viewer": "npx playwright test --ui",
-    "test-all-allure": "rm -rf ./allure && npm run test-all && cd ./allure/ && npx allure generate && npx http-server ./allure-report",
-    "allure-open": "cd ./allure/ && npx allure generate && npx allure open"
+    "test-all-allure": "rm -rf ./allure && npm run test-all && npm run allure-open",
+    "docker-test-all-allure": "rm -rf ./allure && npm run test-all && npm run docker-allure-open",
+    "allure-open": "cd ./allure/ && npx allure generate && npx allure open",
+    "docker-allure-open": "cd ./allure/ && npx allure generate && npx http-server ./allure-report"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
     "typescript-eslint": "^8.50.1"
   },
   "dependencies": {
-    "allure": "^3.0.0"
+    "allure": "^3.0.0",
+    "dotenv": "^17.2.3"
   }
 }
