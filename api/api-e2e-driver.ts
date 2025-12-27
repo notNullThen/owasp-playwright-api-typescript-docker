@@ -1,5 +1,5 @@
-import { additionalConfig } from "../../playwright.config";
-import Utils from "../../support/utils";
+import { additionalConfig } from "../playwright.config";
+import Utils from "../support/utils";
 import APIDriver, { HttpMethod } from "./api-driver";
 import test, { Page } from "@playwright/test";
 

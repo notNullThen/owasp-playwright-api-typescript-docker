@@ -1,6 +1,6 @@
 import test, { APIRequestContext, APIResponse, Response } from "@playwright/test";
-import Utils from "../../support/utils";
-import { additionalConfig } from "../../playwright.config";
+import Utils from "../support/utils";
+import { additionalConfig } from "../playwright.config";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
 
