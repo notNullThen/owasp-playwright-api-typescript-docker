@@ -1,23 +1,25 @@
 import { additionalConfig } from "../../playwright.config";
 import Utils from "../../support/utils";
 import APIDriver, { HttpMethod } from "./api-driver";
-import test, { expect, Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 
 export default abstract class APIE2EDriver extends APIDriver {
   constructor(protected page: Page, baseUrl: string) {
     super(page.request, baseUrl);
   }
 
-  protected async waitFor<T>(url: string, method: HttpMethod, expectedStatusCode: number) {
-    const fullURL = this.getFullURL(url);
-    const route = fullURL.replace(Utils.connectUrlParts(process.env.BASE_URL, process.env.ENVIRONMENT), "");
+  protected async waitFor<T>(url: string, method: HttpMethod, expectedStatusCodes?: number[]) {
+    this.expectedStatusCodes = expectedStatusCodes ?? this.expectedStatusCodes;
+    this.method = method;
+    this.fullURL = this.getFullURL(url);
+    this.route = this.fullURL.replace(Utils.connectUrlParts(process.env.BASE_URL, process.env.ENVIRONMENT), "");
 
-    return await test.step(`Wait for ${method} ${expectedStatusCode} "${route}" API response`, async () => {
+    return await test.step(`Wait for ${method} "${this.route}" ${this.expectedStatusCodes.join(", ")}`, async () => {
       const response = await this.page.waitForResponse(
         (response) => {
           // Ignore trailing slash and casing differences
           const actualUrl = Utils.normalizeUrl(response.url());
-          const expectedUrl = Utils.normalizeUrl(fullURL);
+          const expectedUrl = Utils.normalizeUrl(this.fullURL);
           const requestMethod = response.request().method();
 
           if (!actualUrl.toLowerCase().includes(expectedUrl.toLowerCase())) return false;
@@ -27,18 +29,10 @@ export default abstract class APIE2EDriver extends APIDriver {
         { timeout: additionalConfig.apiWaitTimeout }
       );
 
-      const status = response.status();
-      expect(status, `Expected to return ${expectedStatusCode}. Got ${status}. Method:\n${method} ${route} `).toBe(
-        expectedStatusCode
-      );
+      this.actualStatusCode = response.status();
+      this.validateStatusCode();
 
-      try {
-        const responseObject = await response.json();
-        const responseBody = responseObject as T;
-        return { response, responseBody };
-      } catch {
-        return { response, responseBody: null };
-      }
+      return await this.getResponse<T>(response);
     });
   }
 }
