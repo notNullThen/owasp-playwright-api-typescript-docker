@@ -9,19 +9,19 @@ export default class RegistrationPage extends PageBase {
   }
 
   get emailInput() {
-    return new InputFormField(this.page).getByLocator("#emailControl");
+    return new InputFormField("Email", this.page).getByLocator("#emailControl");
   }
   get passwordInput() {
-    return new InputFormField(this.page).getByLocator("#passwordControl");
+    return new InputFormField("Password", this.page).getByLocator("#passwordControl");
   }
   get repeatPasswordInput() {
-    return new InputFormField(this.page).getByLocator("#repeatPasswordControl");
+    return new InputFormField("Repeat password", this.page).getByLocator("#repeatPasswordControl");
   }
   get securityQuestionDropdown() {
-    return new Dropdown(this.page).getByName("securityQuestion");
+    return new Dropdown("Security question", this.page).getByName("security question");
   }
   get answerInput() {
-    return new InputFormField(this.page).getByLocator("#securityAnswerControl");
+    return new InputFormField("Security answer", this.page).getByLocator("#securityAnswerControl");
   }
   get registerButton() {
     return this.page.locator("button[type=submit]");

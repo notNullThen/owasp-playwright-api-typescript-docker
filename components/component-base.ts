@@ -1,7 +1,7 @@
 import { Locator } from "@playwright/test";
 
 export default abstract class ComponentBase {
-  constructor(public body: Locator) {}
+  constructor(protected componentName: string, public body: Locator) {}
 
   protected page = this.body.page();
 

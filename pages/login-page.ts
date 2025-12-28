@@ -9,16 +9,16 @@ export default class LoginPage extends PageBase {
   }
 
   get emailInput() {
-    return new InputFormField(this.page).getByAriaLabel("email");
+    return new InputFormField("Email", this.page).getByAriaLabel("email");
   }
   get passwordInput() {
-    return new InputFormField(this.page).getByAriaLabel("password");
+    return new InputFormField("Password", this.page).getByAriaLabel("password");
   }
   get loginButton() {
     return this.page.getByRole("button", { name: "Login", exact: true });
   }
   get rememberMeCheckbox() {
-    return new Checkbox(this.page).getByName("Remember me");
+    return new Checkbox("Remember Me", this.page).getByName("Remember me");
   }
 
   async login(email: string, password: string, rememberMe = true) {
@@ -29,6 +29,9 @@ export default class LoginPage extends PageBase {
     }
 
     const [, response] = await Promise.all([this.loginButton.click(), this.api.restUser.waitForLogin()]);
+
+    // Add email check from header after component is ready
+
     return response;
   }
 }

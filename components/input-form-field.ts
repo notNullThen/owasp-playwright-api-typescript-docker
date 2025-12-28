@@ -1,14 +1,16 @@
-import { Locator, Page } from "@playwright/test";
-import ComponentBase from "./component-base";
+import test, { Locator, Page } from "@playwright/test";
+import FormFieldBase from "./form-field-base";
 
-export default class InputFormField extends ComponentBase {
+export default class InputFormField extends FormFieldBase {
   private errorClass = "mat-form-field-invalid" as const;
 
-  constructor(page?: Page, protected parent?: Locator) {
+  constructor(componentName: string, page?: Page, protected parent?: Locator) {
     if (!page && !parent) {
       throw new Error("Either Page or parent Locator must be provided");
     }
-    super((parent || page).locator("mat-form-field", { has: page.getByRole("textbox") }));
+    super(componentName, page, parent);
+
+    this.body = this.body.filter({ has: this.page.getByRole("textbox") });
     this.page = parent ? parent.page() : page;
   }
 
@@ -17,35 +19,41 @@ export default class InputFormField extends ComponentBase {
   }
 
   getByLabel(name: string) {
-    const formField = new InputFormField(this.page, this.parent);
+    const formField = new InputFormField(this.componentName, this.page, this.parent);
     formField.body = this.body.filter({ has: this.page.getByLabel(name, { exact: true }) });
     return formField;
   }
   getByLocator(locator: string) {
-    const formField = new InputFormField(this.page, this.parent);
+    const formField = new InputFormField(this.componentName, this.page, this.parent);
     formField.body = this.body.filter({ has: this.page.locator(locator) });
     return formField;
   }
   getByAriaLabel(name: string) {
-    const formField = new InputFormField(this.page, this.parent);
+    const formField = new InputFormField(this.componentName, this.page, this.parent);
     formField.body = this.body.filter({ has: this.page.getByRole("textbox", { name }) });
     return formField;
   }
 
   async fill(value: string | number) {
-    await this.input.fill(String(value));
+    await test.step(`Fill "${this.componentName}" input field with value: "${value}"`, async () => {
+      await this.input.fill(String(value));
+    });
   }
 
   async shouldHaveError() {
-    if (!(await this.hasError())) {
-      throw new Error("Expected form field to have an error, but it does not.");
-    }
+    await test.step(`Verify "${this.componentName}" input field has an error`, async () => {
+      if (!(await this.hasError())) {
+        throw new Error("Expected form field to have an error, but it does not.");
+      }
+    });
   }
 
   async shouldNotHaveError() {
-    if (await this.hasError()) {
-      throw new Error("Expected form field not to have an error, but it does.");
-    }
+    await test.step(`Verify "${this.componentName}" input field has no error`, async () => {
+      if (await this.hasError()) {
+        throw new Error("Expected form field not to have an error, but it does.");
+      }
+    });
   }
 
   async hasError() {
