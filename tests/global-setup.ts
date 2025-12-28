@@ -15,6 +15,11 @@ export const test = baseTest.extend<unknown, { workerStorageState: string }>({
   // Authenticate once per worker with a worker-scoped fixture.
   workerStorageState: [
     async ({ browser }, use) => {
+      if (test.info().title.includes("[no-login]")) {
+        await use(undefined);
+        return;
+      }
+
       const id = test.info().parallelIndex;
       const fileName = path.resolve(test.info().project.outputDir, `.auth/${id}.json`);
 
