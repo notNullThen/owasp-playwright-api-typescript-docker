@@ -1,12 +1,13 @@
 import test, { APIRequestContext, APIResponse, Response } from "@playwright/test";
-import Utils from "../support/utils";
-import { additionalConfig } from "../playwright.config";
+import Utils from "../../support/utils";
+import { additionalConfig } from "../../playwright.config";
+import config from "../../playwright.config";
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
 
 export default abstract class APIDriver {
-  constructor(private apiRequestContext: APIRequestContext, protected baseUrl: string) {
-    this.baseUrl = Utils.connectUrlParts(process.env.BASE_URL, process.env.ENVIRONMENT, "api", this.baseUrl);
+  constructor(private apiRequestContext: APIRequestContext, protected baseAPIURL: string) {
+    this.baseAPIURL = Utils.connectUrlParts(config.use.baseURL, this.baseAPIURL);
   }
 
   protected method: HttpMethod;
@@ -19,7 +20,7 @@ export default abstract class APIDriver {
     this.expectedStatusCodes = expectedStatusCodes ?? this.expectedStatusCodes;
     this.method = method;
     this.fullURL = this.getFullURL(url);
-    this.route = this.fullURL.replace(Utils.connectUrlParts(process.env.BASE_URL, process.env.ENVIRONMENT), "");
+    this.route = this.fullURL.replace(Utils.connectUrlParts(config.use.baseURL), "");
 
     return await test.step(`Request ${method} "${this.route}", expect ${this.expectedStatusCodes.join(
       ", "
@@ -39,7 +40,7 @@ export default abstract class APIDriver {
 
   protected async getResponse<T>(response: APIResponse | Response) {
     try {
-      const responseObject = await response.json();
+      const responseObject = await response.text();
       const responseBody = responseObject as T;
       return { response, responseBody };
     } catch {
@@ -59,6 +60,6 @@ export default abstract class APIDriver {
 
   protected getFullURL(url: string) {
     if (!url) url = "";
-    return url.trim().length === 0 ? this.baseUrl : Utils.connectUrlParts(this.baseUrl, url);
+    return url.trim().length === 0 ? this.baseAPIURL : Utils.connectUrlParts(this.baseAPIURL, url);
   }
 }
