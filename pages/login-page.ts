@@ -1,16 +1,18 @@
+import { Page } from "@playwright/test";
 import Checkbox from "../components/checkbox";
+import InputFormField from "../components/input-form-field";
 import PageBase from "./page-base";
 
 export default class LoginPage extends PageBase {
-  async goto() {
-    await this.page.goto("/#/login");
+  constructor(page: Page) {
+    super(page, "/#/login");
   }
 
   get emailInput() {
-    return this.page.getByRole("textbox", { name: "email" });
+    return new InputFormField(this.page).getByAriaLabel("email");
   }
   get passwordInput() {
-    return this.page.getByRole("textbox", { name: "password" });
+    return new InputFormField(this.page).getByAriaLabel("password");
   }
   get loginButton() {
     return this.page.getByRole("button", { name: "Login", exact: true });
