@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "../global-setup";
 
 test("has title", async ({ page }) => {
   await page.goto("/");
