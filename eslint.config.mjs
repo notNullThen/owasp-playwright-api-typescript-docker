@@ -32,6 +32,7 @@ export default defineConfig([
       "playwright/no-nested-step": "off",
       "playwright/no-conditional-in-test": "off",
       "playwright/no-conditional-expect": "off",
+      "playwright/prefer-web-first-assertions": "off",
     },
   },
 ]);
