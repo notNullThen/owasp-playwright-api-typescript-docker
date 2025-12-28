@@ -1,7 +1,7 @@
 import { APIRequestContext } from "@playwright/test";
 import APIDriver from "./base/api-driver";
 
-type SecurityQuestionResponse = {
+export type SecurityQuestionResponse = {
   status: string;
   data: {
     id: number;
