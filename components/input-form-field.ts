@@ -1,11 +1,15 @@
 import { Locator, Page } from "@playwright/test";
-import ComponentFromParentBase from "./component-from-parent-base";
+import ComponentBase from "./component-base";
 
-export default class InputFormField extends ComponentFromParentBase {
-  private errorClass = "mat-form-field-invalid";
+export default class InputFormField extends ComponentBase {
+  private errorClass = "mat-form-field-invalid" as const;
 
-  constructor(page?: Page, parent?: Locator) {
-    super("mat-form-field", page, parent);
+  constructor(page?: Page, protected parent?: Locator) {
+    if (!page && !parent) {
+      throw new Error("Either Page or parent Locator must be provided");
+    }
+    super((parent || page).locator("mat-form-field", { has: page.getByRole("textbox") }));
+    this.page = parent ? parent.page() : page;
   }
 
   get input() {
@@ -17,13 +21,11 @@ export default class InputFormField extends ComponentFromParentBase {
     formField.body = this.body.filter({ has: this.page.getByLabel(name, { exact: true }) });
     return formField;
   }
-
   getByLocator(locator: string) {
     const formField = new InputFormField(this.page, this.parent);
     formField.body = this.body.filter({ has: this.page.locator(locator) });
     return formField;
   }
-
   getByAriaLabel(name: string) {
     const formField = new InputFormField(this.page, this.parent);
     formField.body = this.body.filter({ has: this.page.getByRole("textbox", { name }) });
