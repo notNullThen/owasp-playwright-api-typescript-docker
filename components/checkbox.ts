@@ -1,16 +1,11 @@
 import { expect, Locator, Page } from "@playwright/test";
-import ComponentBase from "./component-base";
+import ComponentFromParentBase from "./component-from-parent-base";
 
-export default class Checkbox extends ComponentBase {
+export default class Checkbox extends ComponentFromParentBase {
   private checkedClass = "mdc-checkbox--selected";
 
-  constructor(page?: Page, private parent?: Locator) {
-    if (!page && !parent) {
-      throw new Error("Either Page or parent Locator must be provided");
-    }
-    super(parent ? parent.locator("mat-checkbox") : page.locator("mat-checkbox"));
-
-    page = parent ? parent.page() : page;
+  constructor(page?: Page, parent?: Locator) {
+    super("mat-checkbox", page, parent);
   }
 
   get checkbox() {
