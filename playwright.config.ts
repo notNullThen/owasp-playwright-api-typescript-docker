@@ -1,12 +1,16 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "node:path";
 import dotenv from "dotenv";
+import assert from "node:assert";
+import Utils from "./support/utils";
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 dotenv.config({ path: path.resolve(__dirname, ".env"), quiet: true });
+assert(process.env.ADMIN_USER_EMAIL, "Environment variable ADMIN_USER_EMAIL is not set");
+assert(process.env.ADMIN_USER_PASSWORD, "Environment variable ADMIN_USER_PASSWORD is not set");
 
 export const additionalConfig = {
   authFilePath: path.join(__dirname, "playwright", ".auth", "user.json"),
@@ -31,7 +35,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: process.env.CI ? "http://juice-shop:3000" : "http://localhost:3000",
+    baseURL: Utils.getBaseUrl(),
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on",
