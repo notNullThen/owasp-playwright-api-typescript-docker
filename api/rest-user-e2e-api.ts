@@ -11,7 +11,7 @@ type LoginResponse = {
   authentication: Authentication;
 };
 
-export default class RestUserIntegrationAPI extends APIE2EDriver {
+export default class RestUserE2EAPI extends APIE2EDriver {
   constructor(page: Page) {
     super(page, "rest/user");
   }

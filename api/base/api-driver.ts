@@ -14,7 +14,7 @@ export default abstract class APIDriver {
   protected fullURL: string;
   protected route: string;
   protected actualStatusCode: number;
-  protected expectedStatusCodes = [200, 201];
+  protected expectedStatusCodes = additionalConfig.expectedAPIResponseCodes;
 
   protected async request<T>(url: string, method: HttpMethod, expectedStatusCodes?: number[], body?: object) {
     this.expectedStatusCodes = expectedStatusCodes ?? this.expectedStatusCodes;
@@ -40,7 +40,7 @@ export default abstract class APIDriver {
 
   protected async getResponse<T>(response: APIResponse | Response) {
     try {
-      const responseObject = await response.text();
+      const responseObject = await response.json();
       const responseBody = responseObject as T;
       return { response, responseBody };
     } catch {

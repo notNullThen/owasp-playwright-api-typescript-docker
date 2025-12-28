@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import RestUserIntegrationAPI from "../rest-user-integration-api";
+import RestUserE2EAPI from "../rest-user-e2e-api";
 import IntegrationAPI from "./integration-api";
 
 export default class E2EAPI {
@@ -7,5 +7,5 @@ export default class E2EAPI {
 
   requests = new IntegrationAPI(this.page.request);
 
-  restUser = new RestUserIntegrationAPI(this.page);
+  restUser = new RestUserE2EAPI(this.page);
 }

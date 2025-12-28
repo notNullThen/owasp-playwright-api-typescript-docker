@@ -15,6 +15,7 @@ assert(process.env.ADMIN_USER_PASSWORD, "Environment variable ADMIN_USER_PASSWOR
 export const additionalConfig = {
   authFilePath: path.join(__dirname, "playwright", ".auth", "user.json"),
   apiWaitTimeout: 5 * 1000,
+  expectedAPIResponseCodes: [200, 201],
 };
 
 /**
