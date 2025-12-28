@@ -1,6 +1,11 @@
-import { BrowserContext } from "@playwright/test";
+import { BrowserContext, Locator } from "@playwright/test";
 
 export default class Utils {
+  public static async waitForElementToBeStable(element: Locator) {
+    const handle = await element.elementHandle();
+    await handle.waitForElementState("stable");
+  }
+
   public static async dismissCookies(context: BrowserContext) {
     await context.addCookies([
       {

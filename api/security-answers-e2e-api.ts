@@ -4,7 +4,7 @@ import { SecurityQuestionResponse } from "./security-answers-integration-api";
 
 export default class SecurityAnswersE2EAPI extends APIE2EDriver {
   constructor(page: Page) {
-    super(page, "securityAnswers");
+    super(page, "/api/SecurityAnswers");
   }
 
   async waitForPostSecurityAnswers() {

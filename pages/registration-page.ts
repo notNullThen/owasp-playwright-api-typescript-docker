@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import InputFormField from "../components/input-form-field";
 import PageBase from "./page-base";
 import Dropdown from "../components/dropdown";
@@ -27,12 +27,33 @@ export default class RegistrationPage extends PageBase {
     return this.page.locator("button[type=submit]");
   }
 
+  async registerUser(options: { email: string; password: string; securityQuestion: string; securityAnswer: string }) {
+    await test.step(`Fill ${options.email} user registration form`, async () => {
+      await this.emailInput.fill(options.email);
+      await this.emailInput.shouldNotHaveError();
+
+      await this.passwordInput.fill(options.password);
+      await this.passwordInput.shouldNotHaveError();
+
+      await this.repeatPasswordInput.fill(options.password);
+      await this.repeatPasswordInput.shouldNotHaveError();
+
+      await this.securityQuestionDropdown.select(options.securityQuestion);
+      await this.answerInput.fill(options.securityAnswer);
+      await this.answerInput.shouldNotHaveError();
+
+      await this.submit();
+    });
+  }
+
   async submit() {
-    const [, userResponse] = await Promise.all([
-      this.registerButton.click(),
-      this.api.users.waitForPostUser(),
-      this.api.securityAnswers.waitForPostSecurityAnswers(),
-    ]);
-    return userResponse;
+    return await test.step("Submit registration form", async () => {
+      const [, userResponse] = await Promise.all([
+        this.registerButton.click(),
+        this.api.users.waitForPostUser(),
+        this.api.securityAnswers.waitForPostSecurityAnswers(),
+      ]);
+      return userResponse;
+    });
   }
 }
