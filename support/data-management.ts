@@ -4,9 +4,16 @@ import { generateRandomUser } from "../data/users";
 import { User } from "../api/users-integration-api";
 
 export const acquireAccount = async (requestContext: APIRequestContext): Promise<User> => {
-  const integrationAPI = new IntegrationAPI(requestContext);
+  const api = new IntegrationAPI(requestContext);
   const user = generateRandomUser();
 
-  const { responseBody } = await integrationAPI.users.postUser(user);
+  // Create user
+  const { responseBody } = await api.users.postUser(user);
+  await api.securityAnswers.postSecurityAnswers({
+    answer: user.securityAnswer,
+    SecurityQuestionId: user.securityQuestion.id,
+    UserId: responseBody.data.id,
+  });
+
   return { response: responseBody, payload: user };
 };
