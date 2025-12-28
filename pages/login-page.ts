@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import Checkbox from "../components/checkbox";
 import InputFormField from "../components/input-form-field";
 import PageBase from "./page-base";
@@ -30,7 +30,9 @@ export default class LoginPage extends PageBase {
 
     const [, response] = await Promise.all([this.loginButton.click(), this.api.restUser.waitForLogin()]);
 
-    // Add email check from header after component is ready
+    await this.header.accountMenu.open();
+    await expect(this.header.accountMenu.userProfileItem).toContainText(email);
+    await this.header.accountMenu.close();
 
     return response;
   }
