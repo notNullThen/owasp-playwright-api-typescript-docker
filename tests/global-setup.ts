@@ -48,3 +48,9 @@ export const test = baseTest.extend<unknown, { workerStorageState: string }>({
     { scope: "worker" },
   ],
 });
+
+test.beforeEach(async ({ page }) => {
+  const context = page.context();
+  await Utils.dismissCookies(context);
+  await Utils.dismissWelcomeBanner(context);
+});
