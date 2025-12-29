@@ -1,6 +1,6 @@
 import { APIRequestContext } from "@playwright/test";
 import IntegrationAPI from "../api/base/integration-api";
-import { generateRandomUser } from "../data/users";
+import { generateRandomUser } from "../data/users-data";
 import { User } from "../api/users-integration-api";
 
 export const acquireAccount = async (requestContext: APIRequestContext): Promise<User> => {
