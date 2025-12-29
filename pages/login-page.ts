@@ -9,16 +9,16 @@ export default class LoginPage extends PageBase {
   }
 
   get emailInput() {
-    return new InputFormField("Email", this.page).getByAriaLabel("email");
+    return new InputFormField({ name: "Email", page: this.page }).getByAriaLabel("email");
   }
   get passwordInput() {
-    return new InputFormField("Password", this.page).getByAriaLabel("password");
+    return new InputFormField({ name: "Password", page: this.page }).getByAriaLabel("password");
   }
   get loginButton() {
     return this.page.getByRole("button", { name: "Login", exact: true });
   }
   get rememberMeCheckbox() {
-    return new Checkbox("Remember Me", this.page).getByName("Remember me");
+    return new Checkbox({ name: "Remember Me", page: this.page }).getByName("Remember me");
   }
 
   async login(email: string, password: string, rememberMe = true) {

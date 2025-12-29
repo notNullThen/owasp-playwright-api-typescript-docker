@@ -3,13 +3,17 @@ import ComponentBase from "./component-base";
 
 export default class Checkbox extends ComponentBase {
   private checkedClass = "mdc-checkbox--selected";
+  private parent: Locator;
 
-  constructor(componentName: string, page?: Page, protected parent?: Locator) {
+  constructor(options: { name: string; page?: Page; parent?: Locator }) {
+    const { name, page = null, parent = null } = options;
+
     if (!page && !parent) {
       throw new Error("Either Page or parent Locator must be provided");
     }
-    super(componentName, (parent || page).locator("mat-checkbox"));
+    super(name, (parent || page).locator("mat-checkbox"));
     this.page = parent ? parent.page() : page;
+    this.parent = parent;
   }
 
   get checkbox() {
@@ -17,7 +21,7 @@ export default class Checkbox extends ComponentBase {
   }
 
   async check() {
-    await test.step(`Check "${this.componentName}" checkbox`, async () => {
+    await test.step(`Check "${this.name}" checkbox`, async () => {
       const isChecked = await this.isChecked();
       if (!isChecked) {
         await this.checkbox.click();
@@ -28,7 +32,7 @@ export default class Checkbox extends ComponentBase {
   }
 
   async uncheck() {
-    await test.step(`Uncheck "${this.componentName}" checkbox`, async () => {
+    await test.step(`Uncheck "${this.name}" checkbox`, async () => {
       const isChecked = await this.isChecked();
       if (isChecked) {
         await this.checkbox.click();
@@ -47,21 +51,21 @@ export default class Checkbox extends ComponentBase {
   }
 
   async shouldBeChecked() {
-    await test.step(`Verify "${this.componentName}" checkbox is checked`, async () => {
+    await test.step(`Verify "${this.name}" checkbox is checked`, async () => {
       const isChecked = await this.isChecked();
       expect(isChecked).toBe(true);
     });
   }
 
   async shouldBeUnchecked() {
-    await test.step(`Verify "${this.componentName}" checkbox is not checked`, async () => {
+    await test.step(`Verify "${this.name}" checkbox is not checked`, async () => {
       const isChecked = await this.isChecked();
       expect(isChecked).toBe(false);
     });
   }
 
   getByName(name: string) {
-    const checkbox = new Checkbox(this.componentName, this.page, this.parent);
+    const checkbox = new Checkbox({ name: this.name, page: this.page, parent: this.parent });
     checkbox.body = this.body.filter({ has: this.page.getByText(name, { exact: true }) });
     return checkbox;
   }

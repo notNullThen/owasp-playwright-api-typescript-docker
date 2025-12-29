@@ -7,7 +7,7 @@ export default class MenuBase extends ComponentBase {
   }
 
   async close() {
-    await test.step(`Close ${this.componentName}`, async () => {
+    await test.step(`Close ${this.name}`, async () => {
       const oldMenuCount = await this.menu.count();
       await this.page.keyboard.press("Escape");
       await expect(this.menu).toHaveCount(oldMenuCount - 1);
