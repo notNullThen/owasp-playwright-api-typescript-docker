@@ -1,0 +1,5 @@
+{
+  "name": "Playwright Dev Container",
+  "image": "mcr.microsoft.com/playwright:v1.57.0-noble",
+  "postCreateCommand": "npm i && npx playwright install --with-deps && cp .env.example .env"
+}
