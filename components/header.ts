@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import ComponentBase from "./component-base";
 import AccountMenu from "./account-menu";
+import SearchBar from "./search-bar";
 
 export default class Header extends ComponentBase {
   constructor(page: Page) {
@@ -8,4 +9,5 @@ export default class Header extends ComponentBase {
   }
 
   accountMenu = new AccountMenu(this.page);
+  searchBar = new SearchBar(this.page);
 }

@@ -62,4 +62,10 @@ export default class InputFormField extends FormFieldBase {
     const classAttribute = await this.body.getAttribute("class");
     return classAttribute.includes(this.errorClass);
   }
+
+  async pressEnter() {
+    await test.step(`Press Enter key on "${this.name}" input field`, async () => {
+      await this.input.press("Enter");
+    });
+  }
 }

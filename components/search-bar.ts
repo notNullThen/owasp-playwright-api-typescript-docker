@@ -7,5 +7,16 @@ export default class SearchBar extends ComponentBase {
     super("Search Bar", page.locator("app-mat-search-bar"));
   }
 
-  searchInput = new InputFormField({ name: "Search Input", parent: this.body });
+  get searchInput() {
+    return new InputFormField({ name: "Search Input", parent: this.body });
+  }
+
+  async search(query: string) {
+    const resultsText = this.page.getByText(`Search Results - ${query}`);
+
+    await this.body.click();
+    await this.searchInput.fill(query);
+    await this.searchInput.pressEnter();
+    await resultsText.waitFor({ state: "visible" });
+  }
 }
