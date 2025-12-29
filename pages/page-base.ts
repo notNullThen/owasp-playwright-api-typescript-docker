@@ -2,6 +2,7 @@ import test, { expect, Page } from "@playwright/test";
 import E2EAPI from "../api/base/e2e-api";
 import ComponentBase from "../components/component-base";
 import Utils from "../support/utils";
+import MenuBase from "../components/menu-base";
 
 export default abstract class PageBase {
   constructor(protected page: Page, protected url: string) {}
@@ -22,13 +23,9 @@ class Header extends ComponentBase {
   accountMenu = new AccountMenu(this.page);
 }
 
-class AccountMenu extends ComponentBase {
+class AccountMenu extends MenuBase {
   constructor(page: Page) {
     super("Account Menu", page.locator("#navbarAccount"));
-  }
-
-  get menu() {
-    return this.page.getByRole("menu");
   }
 
   get userProfileItem() {
@@ -42,17 +39,6 @@ class AccountMenu extends ComponentBase {
         await Utils.waitForElementToBeStable(this.menu);
       }
       await expect(this.menu).toBeVisible();
-    });
-  }
-
-  async close() {
-    await test.step(`Close ${this.componentName}`, async () => {
-      while (await this.isMenuOpen()) {
-        await this.page.keyboard.press("Escape");
-        await Utils.waitForElementToBeStable(this.menu);
-      }
-
-      await expect(this.menu).toHaveCount(0);
     });
   }
 
