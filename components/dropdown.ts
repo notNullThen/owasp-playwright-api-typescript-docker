@@ -3,8 +3,12 @@ import FormFieldBase from "./form-field-base";
 import Utils from "../support/utils";
 
 export default class Dropdown extends FormFieldBase {
-  constructor(options: { name: string; page?: Page; parent?: Locator }) {
-    const { name, page = null, parent = null } = options;
+  constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
+    if (!options.componentName.endsWith(" Dropdown")) {
+      options.componentName = options.componentName + " Dropdown";
+    }
+
+    const { componentName: name, page = null, parent = null } = options;
 
     if (!page && !parent) {
       throw new Error("Either Page or parent Locator must be provided");
@@ -19,7 +23,7 @@ export default class Dropdown extends FormFieldBase {
   }
 
   getByName(name: string) {
-    const formField = new Dropdown({ name: this.name, page: this.page, parent: this.parent });
+    const formField = new Dropdown({ componentName: this.componentName, page: this.page, parent: this.parent });
     formField.body = this.body.filter({ has: this.page.getByRole("combobox", { name }) });
     return formField;
   }
@@ -29,7 +33,7 @@ export default class Dropdown extends FormFieldBase {
   }
 
   async select(name: string) {
-    await test.step(`Select "${this.name}" dropdown "${name}" option`, async () => {
+    await test.step(`Select "${this.componentName}" dropdown "${name}" option`, async () => {
       await this.body.getByRole("combobox").click();
       await Utils.waitForElementToBeStable(this.options);
 

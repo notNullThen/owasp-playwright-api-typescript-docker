@@ -1,5 +1,5 @@
 import test, { Page } from "@playwright/test";
-import InputFormField from "../components/input-form-field";
+import InputField from "../components/input-form-field";
 import PageBase from "./page-base";
 import Dropdown from "../components/dropdown";
 
@@ -9,19 +9,19 @@ export default class RegistrationPage extends PageBase {
   }
 
   get emailInput() {
-    return new InputFormField({ name: "Email", page: this.page }).getByLocator("#emailControl");
+    return new InputField({ componentName: "Email", page: this.page }).getByLocator("#emailControl");
   }
   get passwordInput() {
-    return new InputFormField({ name: "Password", page: this.page }).getByLocator("#passwordControl");
+    return new InputField({ componentName: "Password", page: this.page }).getByLocator("#passwordControl");
   }
   get repeatPasswordInput() {
-    return new InputFormField({ name: "Repeat password", page: this.page }).getByLocator("#repeatPasswordControl");
+    return new InputField({ componentName: "Repeat password", page: this.page }).getByLocator("#repeatPasswordControl");
   }
   get securityQuestionDropdown() {
-    return new Dropdown({ name: "Security question", page: this.page }).getByName("security question");
+    return new Dropdown({ componentName: "Security question", page: this.page }).getByName("security question");
   }
   get answerInput() {
-    return new InputFormField({ name: "Security answer", page: this.page }).getByLocator("#securityAnswerControl");
+    return new InputField({ componentName: "Security answer", page: this.page }).getByLocator("#securityAnswerControl");
   }
   get registerButton() {
     return this.page.locator("button[type=submit]");

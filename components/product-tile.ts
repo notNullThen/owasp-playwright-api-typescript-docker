@@ -2,8 +2,8 @@ import { Page } from "@playwright/test";
 import ComponentBase from "./component-base";
 
 export default class ProductTile extends ComponentBase {
-  constructor(name: string, page: Page) {
-    super(name, page.locator("mat-grid-tile"));
+  constructor(page: Page) {
+    super("Product tile", page.locator("mat-grid-tile"));
   }
 
   get name() {

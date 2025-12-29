@@ -12,7 +12,7 @@ export default class AccountMenu extends MenuBase {
   }
 
   async open() {
-    await test.step(`Open ${this.name}`, async () => {
+    await test.step(`Open ${this.componentName}`, async () => {
       if (!(await this.isMenuOpen())) {
         await this.body.click();
         await Utils.waitForElementToBeStable(this.menu);
