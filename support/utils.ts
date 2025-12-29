@@ -42,10 +42,13 @@ export default class Utils {
   }
 
   static connectUrlParts(...parts: string[]) {
-    return parts
-      .filter((part) => part && part.trim().length > 0)
+    const connectedParts = parts
+      .filter((part) => part)
       .map((part) => this.normalizeUrl(part))
+      .filter((part) => part.trim().length > 0)
       .join("/");
+
+    return connectedParts + "/";
   }
 
   static normalizeUrl(url: string) {

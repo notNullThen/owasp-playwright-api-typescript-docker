@@ -14,15 +14,18 @@ export type RequestParameters = {
 
 export default class APIIntegrationDriver {
   protected apiWaitTimeout = additionalConfig.apiWaitTimeout;
+  protected fullURL: string;
+  protected route: string;
+  protected method: HttpMethod;
+  protected expectedStatusCodes: number[];
 
   constructor(private context: APIRequestContext, protected baseAPIURL: string, private options: RequestParameters) {
     this.baseAPIURL = Utils.connectUrlParts(config.use.baseURL, this.baseAPIURL);
+    this.fullURL = Utils.connectUrlParts(this.baseAPIURL, this.options.url);
+    this.route = this.fullURL.replace(Utils.connectUrlParts(config.use.baseURL), "");
+    this.method = this.options.method;
+    this.expectedStatusCodes = this.options.expectedStatusCodes ?? additionalConfig.expectedAPIResponseCodes;
   }
-
-  protected fullURL = Utils.connectUrlParts(this.baseAPIURL, this.options.url);
-  protected route = this.fullURL.replace(Utils.connectUrlParts(config.use.baseURL), "");
-  protected method = this.options.method;
-  protected expectedStatusCodes = additionalConfig.expectedAPIResponseCodes;
 
   protected actualStatusCode: number;
 
@@ -58,7 +61,7 @@ export default class APIIntegrationDriver {
   protected validateStatusCode() {
     if (!this.expectedStatusCodes.includes(this.actualStatusCode)) {
       throw new Error(
-        `Expected to return ${this.expectedStatusCodes.join(", ")}, but got ${this.actualStatusCode}. Endpoint:\n${
+        `Expected to return ${this.expectedStatusCodes.join(", ")}, but got ${this.actualStatusCode}.\nEndpoint: ${
           this.method
         } ${this.route} `
       );

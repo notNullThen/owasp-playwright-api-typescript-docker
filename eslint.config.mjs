@@ -26,7 +26,9 @@ export default defineConfig([
       },
     },
     rules: {
+      "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/no-floating-promises": "error",
+
       "@typescript-eslint/no-explicit-any": "off",
       "playwright/expect-expect": "off",
       "playwright/no-nested-step": "off",
