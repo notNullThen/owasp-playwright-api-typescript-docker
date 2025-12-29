@@ -12,9 +12,9 @@ services:
           "-e",
           "require('node:http').get('http://localhost:3000', (res) => { if (res.statusCode >= 200 && res.statusCode < 400) process.exit(0); else process.exit(1); }).on('error', (err) => process.exit(1));",
         ]
-      interval: 3s
-      timeout: 3s
-      retries: 5
+      interval: 1s
+      timeout: 1s
+      retries: 15
 
   playwright:
     build: .
