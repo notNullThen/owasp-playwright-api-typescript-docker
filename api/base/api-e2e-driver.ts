@@ -1,21 +1,16 @@
-import { additionalConfig } from "../../playwright.config";
 import Utils from "../../support/utils";
-import APIDriver, { HttpMethod } from "./api-driver";
+import APIIntegrationDriver, { RequestParameters as RequestOptions } from "./api-integration-driver";
 import test, { Page } from "@playwright/test";
-import config from "../../playwright.config";
 
-export default abstract class APIE2EDriver extends APIDriver {
-  constructor(protected page: Page, baseAPIURL: string) {
-    super(page.request, baseAPIURL);
+export default class APIE2EDriver extends APIIntegrationDriver {
+  constructor(private page: Page, baseAPIURL: string, options: RequestOptions) {
+    super(page.request, baseAPIURL, options);
   }
 
-  protected async waitFor<T>(url: string, method: HttpMethod, expectedStatusCodes?: number[]) {
-    this.expectedStatusCodes = expectedStatusCodes ?? this.expectedStatusCodes;
-    this.method = method;
-    this.fullURL = this.getFullURL(url);
-    this.route = this.fullURL.replace(Utils.connectUrlParts(config.use.baseURL), "");
-
-    return await test.step(`Wait for ${method} "${this.route}" ${this.expectedStatusCodes.join(", ")}`, async () => {
+  public async waitFor<T>() {
+    return await test.step(`Wait for ${this.method} "${this.route}" ${this.expectedStatusCodes.join(
+      ", "
+    )}`, async () => {
       const response = await this.page.waitForResponse(
         (response) => {
           // Ignore trailing slash and casing differences
@@ -24,10 +19,10 @@ export default abstract class APIE2EDriver extends APIDriver {
           const requestMethod = response.request().method();
 
           if (!actualUrl.toLowerCase().includes(expectedUrl.toLowerCase())) return false;
-          if (requestMethod.toLowerCase() !== method.toLowerCase()) return false;
+          if (requestMethod.toLowerCase() !== this.method.toLowerCase()) return false;
           return true;
         },
-        { timeout: additionalConfig.apiWaitTimeout }
+        { timeout: this.apiWaitTimeout }
       );
 
       this.actualStatusCode = response.status();

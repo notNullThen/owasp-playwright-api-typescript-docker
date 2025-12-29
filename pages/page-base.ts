@@ -1,11 +1,11 @@
 import { Page } from "@playwright/test";
-import E2EAPI from "../api/base/e2e-api";
 import Header from "../components/header";
+import API from "../api/base/api";
 
 export default abstract class PageBase {
   constructor(protected page: Page, protected url: string) {}
 
-  api = new E2EAPI(this.page);
+  api = new API();
   header = new Header(this.page);
 
   async goto() {

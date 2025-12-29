@@ -1,5 +1,3 @@
-import { APIRequestContext } from "@playwright/test";
-import CreatedData from "../data/created-data";
 import APIDriver from "./base/api-driver";
 
 type SecurityQuestion = {
@@ -39,14 +37,12 @@ export type User = {
   payload: UserPayload;
 };
 
-export default class UsersIntegrationAPI extends APIDriver {
-  constructor(apiRequestContext: APIRequestContext) {
-    super(apiRequestContext, "api/users");
+export default class UsersAPI extends APIDriver {
+  constructor() {
+    super("api/users");
   }
 
-  async postUser(userPayload: UserPayload) {
-    const response = await this.request<UserResponse>("/", "POST", null, userPayload);
-    if (response.responseBody) CreatedData.createdUsers.push({ response: response.responseBody, payload: userPayload });
-    return response;
+  postUser(userPayload?: UserPayload) {
+    return this.action<UserResponse>({ url: "", method: "POST", body: userPayload });
   }
 }
