@@ -1,39 +1,10 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
 import { additionalConfig } from "../../playwright.config";
-import config from "../../playwright.config";
 import Utils from "../../support/utils";
+import APIParametersBase from "./api-parameters-base";
 
-type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
-
-export type RequestParameters = {
-  url: string;
-  method: HttpMethod;
-  expectedStatusCodes?: number[];
-  body?: object;
-};
-
-export default abstract class APIEndpointBase {
-  private apiWaitTimeout = additionalConfig.apiWaitTimeout;
-  private fullURL: string;
-  private route: string;
-  private method: HttpMethod;
-  private expectedStatusCodes: number[];
-  private params: RequestParameters;
-
-  constructor(private baseAPIURL: string) {
-    this.baseAPIURL = Utils.connectUrlParts(config.use.baseURL, this.baseAPIURL);
-  }
-
+export default abstract class APIEndpointBase extends APIParametersBase {
   private actualStatusCode: number;
-
-  public setParameters(params: RequestParameters) {
-    this.fullURL = Utils.connectUrlParts(this.baseAPIURL, params.url);
-    this.route = this.fullURL.replace(Utils.connectUrlParts(config.use.baseURL), "");
-    this.method = params.method;
-    this.expectedStatusCodes = params.expectedStatusCodes ?? additionalConfig.expectedAPIResponseCodes;
-    this.params = params;
-    return this;
-  }
 
   public async request<T>(context: APIRequestContext) {
     return await test.step(`Request ${this.method} "${this.route}", expect ${this.expectedStatusCodes.join(

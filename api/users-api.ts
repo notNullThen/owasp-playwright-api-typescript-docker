@@ -1,5 +1,5 @@
 import CreatedData from "../data/created-data";
-import APIBase, { Context } from "./base/api-base";
+import APIBase, { APIContext } from "./base/api-base";
 
 type SecurityQuestion = {
   id: number;
@@ -39,7 +39,7 @@ export type User = {
 };
 
 export default class UsersAPI extends APIBase {
-  constructor(context: Context) {
+  constructor(context: APIContext) {
     super(context, "api/users");
   }
 

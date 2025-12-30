@@ -1,31 +1,27 @@
 import { APIRequestContext, Page } from "@playwright/test";
-import APIEndpointBase, { RequestParameters } from "./api-endpoint-base";
+import APIEndpointBase from "./api-endpoint-base";
+import { RequestParameters } from "./api-parameters-base";
 
-export type Context = Page | APIRequestContext;
+export type APIContext = Page | APIRequestContext;
 
 export default abstract class APIBase extends APIEndpointBase {
-  constructor(private context: Context, baseURL: string) {
+  constructor(private context: APIContext, baseURL: string) {
     super(baseURL);
   }
 
   public action<T>(params: RequestParameters) {
-    const isRequestContext = !("goto" in this.context);
-
-    if (isRequestContext) {
-      return {
-        request: async () => {
-          return await this.setParameters(params).request<T>(this.context as APIRequestContext);
-        },
-      };
-    }
-
     return {
       request: async () => {
-        return await this.setParameters(params).request<T>(this.context as APIRequestContext);
+        return await this.aquireParameters(params).request<T>(this.context as APIRequestContext);
       },
 
       wait: async () => {
-        return await this.setParameters(params).wait<T>(this.context as Page);
+        const isPage = "goto" in this.context;
+        if (!isPage) {
+          throw new Error("You can use wait() only in the context of UI Tests (context should be of 'Page' type)");
+        }
+
+        return await this.aquireParameters(params).wait<T>(this.context as Page);
       },
     };
   }

@@ -1,4 +1,4 @@
-import APIBase, { Context } from "./base/api-base";
+import APIBase, { APIContext } from "./base/api-base";
 
 type Authentication = {
   token: string;
@@ -11,7 +11,7 @@ type LoginResponse = {
 };
 
 export default class RestUserAPI extends APIBase {
-  constructor(context: Context) {
+  constructor(context: APIContext) {
     super(context, "rest/user");
   }
 

@@ -1,4 +1,4 @@
-import APIBase, { Context } from "./base/api-base";
+import APIBase, { APIContext } from "./base/api-base";
 
 export type SecurityQuestionResponse = {
   status: string;
@@ -19,7 +19,7 @@ export type SecurityAnswersPayload = {
 };
 
 export default class SecurityAnswersAPI extends APIBase {
-  constructor(context: Context) {
+  constructor(context: APIContext) {
     super(context, "api/SecurityAnswers");
   }
 
