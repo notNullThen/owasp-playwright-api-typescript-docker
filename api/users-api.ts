@@ -1,4 +1,5 @@
-import APIDriver from "./base/api-driver";
+import CreatedData from "../data/created-data";
+import APIBase, { Context } from "./base/api-base";
 
 type SecurityQuestion = {
   id: number;
@@ -37,12 +38,18 @@ export type User = {
   payload: UserPayload;
 };
 
-export default class UsersAPI extends APIDriver {
-  constructor() {
-    super("api/users");
+export default class UsersAPI extends APIBase {
+  constructor(context: Context) {
+    super(context, "api/users");
   }
 
   postUser(userPayload?: UserPayload) {
     return this.action<UserResponse>({ url: "", method: "POST", body: userPayload });
+  }
+
+  async createUser(userPayload: UserPayload) {
+    const { responseBody } = await this.postUser(userPayload).request();
+    CreatedData.createdUsers.push({ payload: userPayload, response: responseBody });
+    return responseBody;
   }
 }

@@ -9,7 +9,7 @@ export const generateRandomUser = () => {
     password: password,
     passwordRepeat: password,
     securityQuestion: {
-      id: generateRandomId(),
+      id: 1,
       question: "Your eldest siblings middle name?",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -18,8 +18,4 @@ export const generateRandomUser = () => {
   };
 
   return user;
-};
-
-const generateRandomId = () => {
-  return Date.now() + Math.floor(Math.random() * 1000);
 };

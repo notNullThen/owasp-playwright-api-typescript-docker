@@ -1,4 +1,4 @@
-import APIDriver from "./base/api-driver";
+import APIBase, { Context } from "./base/api-base";
 
 type Authentication = {
   token: string;
@@ -10,9 +10,9 @@ type LoginResponse = {
   authentication: Authentication;
 };
 
-export default class RestUserAPI extends APIDriver {
-  constructor() {
-    super("rest/user");
+export default class RestUserAPI extends APIBase {
+  constructor(context: Context) {
+    super(context, "rest/user");
   }
 
   login() {

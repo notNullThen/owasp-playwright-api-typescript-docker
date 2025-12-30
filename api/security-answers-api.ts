@@ -1,4 +1,4 @@
-import APIDriver from "./base/api-driver";
+import APIBase, { Context } from "./base/api-base";
 
 export type SecurityQuestionResponse = {
   status: string;
@@ -18,9 +18,9 @@ export type SecurityAnswersPayload = {
   SecurityQuestionId: number;
 };
 
-export default class SecurityAnswersAPI extends APIDriver {
-  constructor() {
-    super("/api/SecurityAnswers");
+export default class SecurityAnswersAPI extends APIBase {
+  constructor(context: Context) {
+    super(context, "api/SecurityAnswers");
   }
 
   postSecurityAnswers(securityAnswersPayload?: SecurityAnswersPayload) {
