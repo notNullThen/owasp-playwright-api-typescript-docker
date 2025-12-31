@@ -1,15 +1,17 @@
 import APIBase, { APIContext } from "./base/api-base";
 
+type Data = {
+  id: number;
+  UserId: number;
+  answer: string;
+  SecurityQuestionId: number;
+  updatedAt: Date;
+  createdAt: Date;
+};
+
 export type SecurityQuestionResponse = {
   status: string;
-  data: {
-    id: number;
-    UserId: number;
-    answer: string;
-    SecurityQuestionId: number;
-    updatedAt: Date;
-    createdAt: Date;
-  };
+  data: Data;
 };
 
 export type SecurityAnswersPayload = {

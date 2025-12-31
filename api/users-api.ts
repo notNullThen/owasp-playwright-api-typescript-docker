@@ -8,21 +8,23 @@ type SecurityQuestion = {
   updatedAt: Date;
 };
 
+type Data = {
+  username: string;
+  role: string;
+  deluxeToken: string;
+  lastLoginIp: string;
+  profileImage: string;
+  isActive: boolean;
+  id: number;
+  email: string;
+  updatedAt: Date;
+  createdAt: Date;
+  deletedAt: Date;
+};
+
 export type UserResponse = {
   status: string;
-  data: {
-    username: string;
-    role: string;
-    deluxeToken: string;
-    lastLoginIp: string;
-    profileImage: string;
-    isActive: boolean;
-    id: number;
-    email: string;
-    updatedAt: Date;
-    createdAt: Date;
-    deletedAt: Date;
-  };
+  data: Data;
 };
 
 export type UserPayload = {
