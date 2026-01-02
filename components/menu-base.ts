@@ -14,7 +14,7 @@ export default class MenuBase extends ComponentBase {
     });
   }
 
-  async isMenuOpen() {
+  async isOpen() {
     return this.menu.isVisible();
   }
 }

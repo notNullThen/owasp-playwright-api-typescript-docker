@@ -13,10 +13,12 @@ export default class AccountMenu extends MenuBase {
 
   async open() {
     await test.step(`Open ${this.componentName}`, async () => {
-      if (!(await this.isMenuOpen())) {
+      if (!(await this.isOpen())) {
         await this.body.click();
         await Utils.waitForElementToBeStable(this.menu);
       }
+      // Here we use Playwright's expect().toBeVisible() instead of isOpen() for waiting until the menu is visible
+      // and avoid potential timing issues.
       await expect(this.menu).toBeVisible();
     });
   }
