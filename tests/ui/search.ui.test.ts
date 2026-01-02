@@ -1,6 +1,6 @@
 import HomePage from "../../components/home-page";
 import { productsData } from "../../data/products-data";
-import { test } from "../global-setup";
+import { test } from "./global-setup";
 
 test("Can search for name", async ({ page }) => {
   const homePage = new HomePage(page);

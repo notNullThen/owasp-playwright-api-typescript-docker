@@ -7,7 +7,7 @@ export default class Checkbox extends ComponentBase {
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
     if (!options.componentName.endsWith(" Checkbox")) {
-      options.componentName = options.componentName + " Checkbox";
+      options.componentName += " Checkbox";
     }
 
     const { componentName, page = null, parent = null } = options;

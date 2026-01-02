@@ -20,8 +20,4 @@ export default class AccountMenu extends MenuBase {
       await expect(this.menu).toBeVisible();
     });
   }
-
-  async isMenuOpen() {
-    return this.menu.isVisible();
-  }
 }

@@ -3,19 +3,22 @@
 import { test as baseTest } from "@playwright/test";
 import fs from "fs";
 import path from "path";
-import { acquireAccount } from "../support/data-management";
-import LoginPage from "../pages/login-page";
-import Utils from "../support/utils";
+import { acquireAccount } from "../../support/data-management";
+import LoginPage from "../../pages/login-page";
+import Utils from "../../support/utils";
+import { User } from "../../api/users-api";
+
+const createdUsers = new Map<number, User>();
 
 export * from "@playwright/test";
-export const test = baseTest.extend<unknown, { workerStorageState: string }>({
+export const test = baseTest.extend<unknown, { workerStorageState: string; createdUser?: User }>({
   // Use the same storage state for all tests in this worker.
   storageState: ({ workerStorageState }, use) => use(workerStorageState),
 
   // Authenticate once per worker with a worker-scoped fixture.
   workerStorageState: [
     async ({ browser }, use) => {
-      if (test.info().title.includes("[no-login]")) {
+      if (test.info().title.includes("[no-autologin]")) {
         await use(undefined);
         return;
       }
@@ -36,6 +39,7 @@ export const test = baseTest.extend<unknown, { workerStorageState: string }>({
       const loginPage = new LoginPage(page);
 
       const user = await acquireAccount(page.request);
+      createdUsers.set(id, user);
 
       await loginPage.goto();
       await loginPage.login(user.payload.email, user.payload.password);
@@ -44,6 +48,13 @@ export const test = baseTest.extend<unknown, { workerStorageState: string }>({
       await page.close();
       await context.close();
       await use(fileName);
+    },
+    { scope: "worker" },
+  ],
+  createdUser: [
+    async ({}, use) => {
+      const parallelIndex = test.info().parallelIndex;
+      await use(createdUsers.get(parallelIndex));
     },
     { scope: "worker" },
   ],

@@ -13,4 +13,8 @@ export default class MenuBase extends ComponentBase {
       await expect(this.menu).toHaveCount(oldMenuCount - 1);
     });
   }
+
+  async isMenuOpen() {
+    return this.menu.isVisible();
+  }
 }

@@ -1,9 +1,9 @@
 import { generateRandomUser } from "../../data/users-data";
 import LoginPage from "../../pages/login-page";
 import RegistrationPage from "../../pages/registration-page";
-import { expect, test } from "../global-setup";
+import { expect, test } from "./global-setup";
 
-test("User Registration & Login [no-login]", async ({ page }) => {
+test("User Registration & Login [no-autologin]", async ({ page }) => {
   const registrationPage = new RegistrationPage(page);
   const loginPage = new LoginPage(page);
 
