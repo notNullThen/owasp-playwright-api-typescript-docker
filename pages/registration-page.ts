@@ -45,6 +45,7 @@ export default class RegistrationPage extends PageBase {
       await this.repeatPasswordInput.shouldNotHaveError();
 
       await this.securityQuestionDropdown.select(options.securityQuestion);
+
       await this.answerInput.fill(options.securityAnswer);
       await this.answerInput.shouldNotHaveError();
 

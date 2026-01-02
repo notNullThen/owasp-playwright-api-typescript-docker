@@ -15,7 +15,7 @@ export default class RestUserAPI extends APIBase {
     super(context, "rest/user");
   }
 
-  login() {
+  postLogin() {
     return this.action<LoginResponse>({ url: "/login", method: "POST" });
   }
 }
