@@ -6,7 +6,7 @@ export default class InputField extends FormFieldBase {
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
     if (!options.componentName.endsWith(" Input Field")) {
-      options.componentName = options.componentName + " Input Field";
+      options.componentName += " Input Field";
     }
 
     const { componentName: name, page = null, parent = null } = options;
