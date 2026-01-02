@@ -11,9 +11,6 @@ export default class InputField extends FormFieldBase {
 
     const { componentName: name, page = null, parent = null } = options;
 
-    if (!page && !parent) {
-      throw new Error("Either Page or parent Locator must be provided");
-    }
     super(name, page, parent);
 
     this.body = this.body.filter({ has: this.page.getByRole("textbox") });
