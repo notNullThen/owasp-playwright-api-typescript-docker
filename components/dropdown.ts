@@ -18,6 +18,10 @@ export default class Dropdown extends FormFieldBase {
     this.page = parent ? parent.page() : page;
   }
 
+  get input() {
+    return this.body.getByRole("combobox");
+  }
+
   get options() {
     return this.page.getByRole("listbox");
   }
@@ -34,11 +38,11 @@ export default class Dropdown extends FormFieldBase {
 
   async select(name: string) {
     await test.step(`Select "${this.componentName}" dropdown "${name}" option`, async () => {
-      await this.body.getByRole("combobox").click();
+      await this.input.click();
       await Utils.waitForElementToBeStable(this.options);
 
       await this.getOptionByName(name).click();
-      await expect(this.body.getByRole("combobox")).toHaveText(name);
+      await expect(this.input).toHaveText(name);
     });
   }
 }

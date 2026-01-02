@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import ComponentBase from "./component-base";
 import InputFormField from "./input-form-field";
 
@@ -12,11 +12,13 @@ export default class SearchBar extends ComponentBase {
   }
 
   async search(query: string) {
-    const resultsText = this.page.getByText(`Search Results - ${query}`);
+    await test.step(`Search in ${this.componentName} for "${query}"`, async () => {
+      const resultsText = this.page.getByText(`Search Results - ${query}`);
 
-    await this.body.click();
-    await this.searchInput.fill(query);
-    await this.searchInput.pressEnter();
-    await resultsText.waitFor({ state: "visible" });
+      await this.body.click();
+      await this.searchInput.fill(query);
+      await this.searchInput.pressEnter();
+      await resultsText.waitFor({ state: "visible" });
+    });
   }
 }

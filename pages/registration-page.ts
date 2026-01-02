@@ -33,13 +33,15 @@ export default class RegistrationPage extends PageBase {
 
   async registerUser(options: { email: string; password: string; securityQuestion: string; securityAnswer: string }) {
     await test.step(`Fill ${options.email} user registration form`, async () => {
+      const { password } = options;
+
       await this.emailInput.fill(options.email);
       await this.emailInput.shouldNotHaveError();
 
-      await this.passwordInput.fill(options.password);
+      await this.passwordInput.fill(password);
       await this.passwordInput.shouldNotHaveError();
 
-      await this.repeatPasswordInput.fill(options.password);
+      await this.repeatPasswordInput.fill(password);
       await this.repeatPasswordInput.shouldNotHaveError();
 
       await this.securityQuestionDropdown.select(options.securityQuestion);
