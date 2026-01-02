@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import Checkbox from "../components/checkbox";
-import InputField from "../components/input-form-field";
+import InputFormField from "../components/input-form-field";
 import PageBase from "./page-base";
 
 export default class LoginPage extends PageBase {
@@ -9,10 +9,10 @@ export default class LoginPage extends PageBase {
   }
 
   get emailInput() {
-    return new InputField({ componentName: "Email", page: this.page }).getByAriaLabel("email");
+    return new InputFormField({ componentName: "Email", page: this.page }).getByAriaLabel("email");
   }
   get passwordInput() {
-    return new InputField({ componentName: "Password", page: this.page }).getByAriaLabel("password");
+    return new InputFormField({ componentName: "Password", page: this.page }).getByAriaLabel("password");
   }
   get loginButton() {
     return this.page.getByRole("button", { name: "Login", exact: true });

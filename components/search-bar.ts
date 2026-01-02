@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 import ComponentBase from "./component-base";
-import InputField from "./input-form-field";
+import InputFormField from "./input-form-field";
 
 export default class SearchBar extends ComponentBase {
   constructor(page: Page) {
@@ -8,7 +8,7 @@ export default class SearchBar extends ComponentBase {
   }
 
   get searchInput() {
-    return new InputField({ componentName: "Search", parent: this.body });
+    return new InputFormField({ componentName: "Search", parent: this.body });
   }
 
   async search(query: string) {

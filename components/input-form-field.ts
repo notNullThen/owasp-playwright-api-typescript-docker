@@ -1,7 +1,7 @@
 import test, { Locator, Page } from "@playwright/test";
 import FormFieldBase from "./form-field-base";
 
-export default class InputField extends FormFieldBase {
+export default class InputFormField extends FormFieldBase {
   private errorClass = "mat-form-field-invalid" as const;
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
@@ -22,17 +22,21 @@ export default class InputField extends FormFieldBase {
   }
 
   getByLabel(name: string) {
-    const formField = new InputField({ componentName: this.componentName, page: this.page, parent: this.parent });
-    formField.body = this.body.filter({ has: this.page.getByLabel(name, { exact: true }) });
-    return formField;
+    const inputFormField = new InputFormField({
+      componentName: this.componentName,
+      page: this.page,
+      parent: this.parent,
+    });
+    inputFormField.body = this.body.filter({ has: this.page.getByLabel(name, { exact: true }) });
+    return inputFormField;
   }
   getByLocator(locator: string) {
-    const formField = new InputField({ componentName: this.componentName, page: this.page, parent: this.parent });
+    const formField = new InputFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
     formField.body = this.body.filter({ has: this.page.locator(locator) });
     return formField;
   }
   getByAriaLabel(name: string) {
-    const formField = new InputField({ componentName: this.componentName, page: this.page, parent: this.parent });
+    const formField = new InputFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
     formField.body = this.body.filter({ has: this.page.getByRole("textbox", { name }) });
     return formField;
   }
