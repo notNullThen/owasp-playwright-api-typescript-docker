@@ -50,7 +50,7 @@ export default class InputFormField extends FormFieldBase {
   async shouldHaveError() {
     await test.step(`Verify "${this.componentName}" input field has an error`, async () => {
       if (!(await this.hasError())) {
-        throw new Error("Expected form field to have an error, but it does not.");
+        throw new Error(`Expected "${this.componentName}" to have an error, but it does not.`);
       }
     });
   }
