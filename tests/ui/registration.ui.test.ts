@@ -20,7 +20,5 @@ test("User Registration & Login [no-autologin]", async ({ page }) => {
     securityAnswer: generatedUser.securityAnswer,
   });
 
-  await page.waitForURL("**/login");
-
   await loginPage.login(generatedUser.email, generatedUser.password);
 });

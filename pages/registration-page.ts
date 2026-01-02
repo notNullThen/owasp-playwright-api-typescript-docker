@@ -60,6 +60,8 @@ export default class RegistrationPage extends PageBase {
         this.api.users.postUser().wait(),
         this.api.securityAnswers.postSecurityAnswers().wait(),
       ]);
+      await this.page.waitForURL("**/login");
+
       return userResponse;
     });
   }
