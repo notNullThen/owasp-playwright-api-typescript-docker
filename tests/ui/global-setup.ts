@@ -23,6 +23,8 @@ export const test = baseTest.extend<unknown, { workerStorageState: string; creat
         return;
       }
 
+      await Utils.waitForBaseUrlReady();
+
       const id = test.info().parallelIndex;
       const fileName = path.resolve(test.info().project.outputDir, `.auth/${id}.json`);
 

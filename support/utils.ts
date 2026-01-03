@@ -1,4 +1,5 @@
 import { BrowserContext, Locator } from "@playwright/test";
+import { additionalConfig } from "../playwright.config";
 
 export default class Utils {
   static PRICE_SYMBOL = "¤" as const;
@@ -61,5 +62,35 @@ export default class Utils {
 
   static removeLeadingSlash(url: string) {
     return url.startsWith("/") ? url.slice(1) : url;
+  }
+
+  // Waits for the base URL to be ready before all tests run
+  // Resolves Docker container startup lag
+  static async waitForBaseUrlReady() {
+    const maxAttempts = additionalConfig.baseUrlReady.retries;
+    const delayBetweenAttemptsMs = additionalConfig.baseUrlReady.delay;
+
+    const baseUrl = Utils.getBaseUrl();
+    let attempt = 0;
+    let isReady = false;
+
+    while (attempt < maxAttempts && !isReady) {
+      try {
+        const response = await fetch(baseUrl);
+        if (response.ok) {
+          isReady = true;
+          break;
+        }
+      } catch {
+        // Ignore errors and retry
+      }
+
+      attempt++;
+      await new Promise((resolve) => setTimeout(resolve, delayBetweenAttemptsMs));
+    }
+
+    if (!isReady) {
+      throw new Error(`Base URL ${baseUrl} does not respond after ${maxAttempts} attempts.`);
+    }
   }
 }

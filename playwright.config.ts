@@ -16,6 +16,12 @@ export const additionalConfig = {
   authFilePath: path.join(__dirname, "playwright", ".auth", "user.json"),
   apiWaitTimeout: 5 * 1000,
   expectedAPIResponseCodes: [200, 201],
+  // Configuration for waiting for the base URL to be ready before all tests run
+  // Resolves Docker container startup lag
+  baseUrlReady: {
+    retries: 30,
+    delay: 1 * 1000,
+  },
 };
 
 /**
