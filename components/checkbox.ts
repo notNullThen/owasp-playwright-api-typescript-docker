@@ -6,10 +6,6 @@ export default class Checkbox extends ComponentBase {
   private parent: Locator;
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    if (!options.componentName.endsWith(" Checkbox")) {
-      options.componentName += " Checkbox";
-    }
-
     const { componentName, page = null, parent = null } = options;
     if (!page && !parent) {
       throw new Error("Either Page or parent Locator must be provided");

@@ -4,10 +4,6 @@ import Utils from "../support/utils";
 
 export default class Dropdown extends FormFieldBase {
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    if (!options.componentName.endsWith(" Dropdown")) {
-      options.componentName += " Dropdown";
-    }
-
     const { componentName: name, page = null, parent = null } = options;
 
     if (!page && !parent) {

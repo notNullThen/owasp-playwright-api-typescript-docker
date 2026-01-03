@@ -5,10 +5,6 @@ export default class InputFormField extends FormFieldBase {
   private errorClass = "mat-form-field-invalid" as const;
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    if (!options.componentName.endsWith(" Input Field")) {
-      options.componentName += " Input Field";
-    }
-
     const { componentName: name, page = null, parent = null } = options;
 
     super(name, page, parent);
