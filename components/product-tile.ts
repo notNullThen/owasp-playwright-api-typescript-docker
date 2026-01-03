@@ -20,7 +20,7 @@ export default class ProductTile extends ComponentBase {
   }
 
   async getPriceValue() {
-    const priceText = await this.price.first().innerText();
+    const priceText = await this.price.innerText();
     return Utils.getPriceFromText(priceText);
   }
 

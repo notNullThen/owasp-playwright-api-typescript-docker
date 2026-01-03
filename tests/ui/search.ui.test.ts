@@ -1,4 +1,4 @@
-import HomePage from "../../components/home-page";
+import HomePage from "../../pages/home-page";
 import { productsData } from "../../data/products-data";
 import { expect, test } from "./global-setup";
 
