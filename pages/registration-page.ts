@@ -1,7 +1,7 @@
 import test, { Page } from "@playwright/test";
 import InputFormField from "../components/input-form-field";
 import PageBase from "./page-base";
-import Dropdown from "../components/dropdown";
+import DropdownFormField from "../components/dropdown";
 
 export default class RegistrationPage extends PageBase {
   constructor(page: Page) {
@@ -20,7 +20,9 @@ export default class RegistrationPage extends PageBase {
     );
   }
   get securityQuestionDropdown() {
-    return new Dropdown({ componentName: "Security question", page: this.page }).getByName("security question");
+    return new DropdownFormField({ componentName: "Security question", page: this.page }).getByName(
+      "security question"
+    );
   }
   get answerInput() {
     return new InputFormField({ componentName: "Security answer", page: this.page }).getByLocator(

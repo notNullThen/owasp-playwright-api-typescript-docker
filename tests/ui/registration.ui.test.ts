@@ -1,11 +1,11 @@
 import { generateRandomUser } from "../../data/users-data";
 import LoginPage from "../../pages/login-page";
 import RegistrationPage from "../../pages/registration-page";
+import { acquireAccount } from "../../support/data-management";
 import { expect, test } from "./global-setup";
 
-test("User Registration & Login [no-autologin]", async ({ page }) => {
+test("User Registration [no-autologin]", async ({ page }) => {
   const registrationPage = new RegistrationPage(page);
-  const loginPage = new LoginPage(page);
 
   const generatedUser = generateRandomUser();
 
@@ -19,6 +19,13 @@ test("User Registration & Login [no-autologin]", async ({ page }) => {
     securityQuestion: generatedUser.securityQuestion.question,
     securityAnswer: generatedUser.securityAnswer,
   });
+});
 
-  await loginPage.login(generatedUser.email, generatedUser.password);
+test("User Login [no-autologin]", async ({ page, request }) => {
+  const loginPage = new LoginPage(page);
+
+  const createdUser = await acquireAccount(request);
+
+  await loginPage.goto();
+  await loginPage.login(createdUser.payload.email, createdUser.payload.password);
 });
