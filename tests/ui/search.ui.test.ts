@@ -1,6 +1,6 @@
 import HomePage from "../../components/home-page";
 import { productsData } from "../../data/products-data";
-import { test } from "./global-setup";
+import { expect, test } from "./global-setup";
 
 test("Can search for name", async ({ page }) => {
   const homePage = new HomePage(page);
@@ -8,4 +8,7 @@ test("Can search for name", async ({ page }) => {
 
   await homePage.goto();
   await homePage.header.searchBar.search(partialName);
+
+  const productTile = homePage.productTiles.getByName(productsData.raspberryJuice.name);
+  await expect(productTile.body).toBeVisible();
 });

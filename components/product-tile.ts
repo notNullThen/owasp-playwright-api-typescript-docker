@@ -7,8 +7,10 @@ export default class ProductTile extends ComponentBase {
     super("Product tile", page.locator("mat-grid-tile"));
   }
 
+  private readonly _itemNameSelector = ".item-name" as const;
+
   get itemName() {
-    return this.body.locator(".item-name");
+    return this.body.locator(this._itemNameSelector);
   }
   get price() {
     return this.body.locator(".item-price");
@@ -24,7 +26,7 @@ export default class ProductTile extends ComponentBase {
 
   getByName(name: string) {
     const tile = new ProductTile(this.page);
-    tile.body = tile.body.filter({ has: this.itemName.getByText(name) });
+    tile.body = tile.body.filter({ has: this.page.locator(this._itemNameSelector).getByText(name) });
     return tile;
   }
 }
