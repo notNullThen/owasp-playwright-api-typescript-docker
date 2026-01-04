@@ -6,9 +6,9 @@
   "scripts": {
     "test-all": "npx playwright test",
     "test-viewer": "npx playwright test --ui",
-    "test-all-allure": "rm -rf ./allure && npm run test-all && npm run allure-open",
-    "docker-test-all-allure": "rm -rf ./allure && npm run test-all && npm run docker-allure-open",
+    "test-all-allure": "rm -rf ./allure && (npm run test-all; test_exit=$?; npm run allure-open || true; exit $test_exit)",
     "allure-open": "cd ./allure/ && npx allure generate && npx allure open",
+    "docker-test-all-allure": "rm -rf ./allure && (npm run test-all; test_exit=$?; npm run docker-allure-open || true; exit $test_exit)",
     "docker-allure-open": "cd ./allure/ && npx allure generate && npx http-server ./allure-report"
   },
   "repository": {
