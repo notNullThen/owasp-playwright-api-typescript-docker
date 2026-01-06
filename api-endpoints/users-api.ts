@@ -1,5 +1,6 @@
 import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
 import CreatedData from "../data/created-data";
+import { ResponseType } from "./types/general-types";
 
 type SecurityQuestion = {
   id: number;
@@ -22,10 +23,7 @@ type Data = {
   deletedAt: Date;
 };
 
-export type UserResponse = {
-  status: string;
-  data: Data;
-};
+export type UserResponse = ResponseType<Data>;
 
 export type UserPayload = {
   email: string;
