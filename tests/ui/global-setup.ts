@@ -1,8 +1,6 @@
 /* See https://playwright.dev/docs/auth#moderate-one-account-per-parallel-worker */
 
 import { test as baseTest } from "@playwright/test";
-import fs from "fs";
-import path from "path";
 import { acquireAccount } from "../../support/data-management";
 import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
@@ -11,55 +9,37 @@ import { User } from "../../api-endpoints/users-api";
 const createdUsers = new Map<number, User>();
 
 export * from "@playwright/test";
-export const test = baseTest.extend<unknown, { workerStorageState: string; createdUser?: User }>({
-  // Use the same storage state for all tests in this worker.
-  storageState: ({ workerStorageState }, use) => use(workerStorageState),
-
-  // Authenticate once per worker with a worker-scoped fixture.
-  workerStorageState: [
-    async ({ browser }, use) => {
-      if (test.info().title.includes("[no-autologin]")) {
-        await use(undefined);
-        return;
-      }
-
-      await Utils.waitForBaseUrlReady();
-
-      const id = test.info().parallelIndex;
-      const fileName = path.resolve(test.info().project.outputDir, `.auth/${id}.json`);
-
-      if (fs.existsSync(fileName)) {
-        await use(fileName);
-        return;
-      }
-
-      const context = await browser.newContext({ storageState: undefined, baseURL: Utils.getBaseUrl() });
-      await Utils.dismissCookies(context);
-      await Utils.dismissWelcomeBanner(context);
-
-      const page = await context.newPage();
-      const loginPage = new LoginPage(page);
-
-      const user = await acquireAccount(page.request);
-      createdUsers.set(id, user);
-
-      await loginPage.goto();
-      await loginPage.login(user.payload.email, user.payload.password);
-
-      await page.context().storageState({ path: fileName });
-      await page.close();
-      await context.close();
-      await use(fileName);
-    },
-    { scope: "worker" },
-  ],
+export const test = baseTest.extend<unknown, { createdUser?: User }>({
   createdUser: [
     async ({}, use) => {
-      const parallelIndex = test.info().parallelIndex;
-      await use(createdUsers.get(parallelIndex));
+      const workerIndex = test.info().workerIndex;
+      await use(createdUsers.get(workerIndex));
     },
     { scope: "worker" },
   ],
+  page: async ({ page }, use) => {
+    const context = page.context();
+    const loginPage = new LoginPage(page);
+
+    const workerIndex = test.info().workerIndex;
+
+    await Utils.dismissCookies(context);
+    await Utils.dismissWelcomeBanner(context);
+    await Utils.waitForBaseUrlReady();
+
+    if (test.info().title.includes("[no-autologin]")) {
+      await use(page);
+      return;
+    }
+
+    const user = await acquireAccount(context.request);
+    createdUsers.set(workerIndex, user);
+
+    await loginPage.goto();
+    await loginPage.login(user.payload.email, user.payload.password);
+
+    await use(page);
+  },
 });
 
 test.beforeEach(async ({ page }) => {
