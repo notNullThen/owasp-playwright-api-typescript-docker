@@ -1,7 +1,7 @@
 import UsersAPI from "./users-api";
 import SecurityAnswersAPI from "./security-answers-api";
 import RestUserAPI from "./rest-user-api";
-import { APIContext } from "./base/api-base";
+import { APIContext } from "../api-base/api-endpoint-base";
 
 export default class API {
   constructor(private context: APIContext) {}

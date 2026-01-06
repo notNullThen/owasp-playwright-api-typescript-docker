@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { UserPayload } from "../api/users-api";
+import { UserPayload } from "../api-endpoints/users-api";
 
 export const generateRandomUser = () => {
   const password = faker.internet.password();

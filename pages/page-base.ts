@@ -1,7 +1,7 @@
 import { Page } from "@playwright/test";
 import Header from "../components/header";
-import API from "../api/api";
 import ProductTile from "../components/product-tile";
+import API from "../api-endpoints/api";
 
 export default abstract class PageBase {
   constructor(protected page: Page, protected url: string) {}

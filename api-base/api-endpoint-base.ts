@@ -1,10 +1,10 @@
 import { APIRequestContext, Page } from "@playwright/test";
-import APIEndpointBase from "./api-endpoint-base";
+import APIBase from "./api-base";
 import { RequestParameters } from "./api-parameters-base";
 
 export type APIContext = Page | APIRequestContext;
 
-export default abstract class APIBase extends APIEndpointBase {
+export default abstract class APIEndpointBase extends APIBase {
   constructor(private context: APIContext, baseURL: string) {
     super(baseURL);
   }

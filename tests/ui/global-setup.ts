@@ -6,7 +6,7 @@ import path from "path";
 import { acquireAccount } from "../../support/data-management";
 import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
-import { User } from "../../api/users-api";
+import { User } from "../../api-endpoints/users-api";
 
 const createdUsers = new Map<number, User>();
 

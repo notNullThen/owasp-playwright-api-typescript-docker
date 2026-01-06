@@ -1,5 +1,5 @@
+import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
 import CreatedData from "../data/created-data";
-import APIBase, { APIContext } from "./base/api-base";
 
 type SecurityQuestion = {
   id: number;
@@ -40,7 +40,7 @@ export type User = {
   payload: UserPayload;
 };
 
-export default class UsersAPI extends APIBase {
+export default class UsersAPI extends APIEndpointBase {
   constructor(context: APIContext) {
     super(context, "api/users");
   }

@@ -1,9 +1,9 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
-import { additionalConfig } from "../../playwright.config";
-import Utils from "../../support/utils";
+import { additionalConfig } from "../playwright.config";
+import Utils from "../support/utils";
 import APIParametersBase from "./api-parameters-base";
 
-export default abstract class APIEndpointBase extends APIParametersBase {
+export default abstract class APIBase extends APIParametersBase {
   private actualStatusCode: number;
 
   public async request<T>(context: APIRequestContext) {

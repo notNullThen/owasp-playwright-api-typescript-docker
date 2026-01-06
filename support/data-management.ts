@@ -1,7 +1,7 @@
 import { APIRequestContext } from "@playwright/test";
 import { generateRandomUser } from "../data/users-data";
-import { User } from "../api/users-api";
-import API from "../api/api";
+import { User } from "../api-endpoints/users-api";
+import API from "../api-endpoints/api";
 
 export const acquireAccount = async (context: APIRequestContext): Promise<User> => {
   const api = new API(context);

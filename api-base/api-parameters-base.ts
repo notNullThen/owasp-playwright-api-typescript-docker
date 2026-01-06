@@ -1,6 +1,6 @@
-import { additionalConfig } from "../../playwright.config";
-import Utils from "../../support/utils";
-import config from "../../playwright.config";
+import { additionalConfig } from "../playwright.config";
+import Utils from "../support/utils";
+import config from "../playwright.config";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
 

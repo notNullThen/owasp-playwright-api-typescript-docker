@@ -1,4 +1,4 @@
-import { User } from "../api/users-api";
+import { User } from "../api-endpoints/users-api";
 
 export default class CreatedData {
   static createdUsers: User[] = [];
