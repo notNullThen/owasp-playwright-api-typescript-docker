@@ -35,6 +35,13 @@ export default class Dropdown extends FormFieldBase {
   async select(name: string) {
     await test.step(`Select "${this.componentName}" dropdown "${name}" option`, async () => {
       await this.input.click();
+      // TODO: Remove retries after bug '123' is fixed
+      if (!(await this.options.isVisible())) {
+        // eslint-disable-next-line playwright/no-wait-for-timeout
+        await this.page.waitForTimeout(1000);
+        await this.input.click();
+      }
+
       await Utils.waitForElementToBeStable(this.options);
 
       await this.getOptionByName(name).click();
