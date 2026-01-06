@@ -1,8 +1,8 @@
-export type ResponseType<T> = {
+export type ResponseBase<T> = {
   status: string;
   data: T;
 };
-export type ProductData<T> = {
+export type ProductDataBase<T> = {
   id: number;
   name: string;
   description: string;

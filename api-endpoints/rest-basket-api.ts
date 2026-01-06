@@ -1,17 +1,16 @@
-import { APIRequestContext } from "@playwright/test";
 import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
-import { ProductData, ResponseType } from "./types/general-types";
+import { ProductDataBase, ResponseBase } from "./types/general-types";
 
-type Data = {
+export type RestBasketData = {
   id: number;
   coupon?: string;
   UserId: number;
   createdAt: Date;
   updatedAt: Date;
-  Products: ProductData<RestBasketItemData>;
+  Products: ProductDataBase<RestBasketItemData>;
 };
 
-type RestBasketItemData = {
+export type RestBasketItemData = {
   id: number;
   ProductId: number;
   BasketId: number;
@@ -20,7 +19,7 @@ type RestBasketItemData = {
   createdAt: string;
 };
 
-type RestBasketResponse = ResponseType<Data>;
+type RestBasketResponse = ResponseBase<RestBasketData>;
 
 export default class RestBasketAPI extends APIEndpointBase {
   constructor(context: APIContext) {

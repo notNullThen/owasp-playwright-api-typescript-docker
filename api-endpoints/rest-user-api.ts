@@ -6,7 +6,7 @@ type Authentication = {
   umail: string;
 };
 
-type LoginResponse = {
+export type LoginResponse = {
   authentication: Authentication;
 };
 

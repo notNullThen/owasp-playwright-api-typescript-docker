@@ -5,15 +5,25 @@ import { acquireAccount } from "../../support/data-management";
 import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
 import { User } from "../../api-endpoints/users-api";
+import { LoginResponse } from "../../api-endpoints/rest-user-api";
+import APIParametersBase from "../../api-base/api-parameters-base";
 
 const createdUsers = new Map<number, User>();
+const loginResponses = new Map<number, LoginResponse>();
 
 export * from "@playwright/test";
-export const test = baseTest.extend<unknown, { createdUser?: User }>({
+export const test = baseTest.extend<unknown, { createdUser?: User; loginResponse?: LoginResponse }>({
   createdUser: [
     async ({}, use) => {
       const workerIndex = test.info().workerIndex;
       await use(createdUsers.get(workerIndex));
+    },
+    { scope: "worker" },
+  ],
+  loginResponse: [
+    async ({}, use) => {
+      const workerIndex = test.info().workerIndex;
+      await use(loginResponses.get(workerIndex));
     },
     { scope: "worker" },
   ],
@@ -36,7 +46,9 @@ export const test = baseTest.extend<unknown, { createdUser?: User }>({
     createdUsers.set(workerIndex, user);
 
     await loginPage.goto();
-    await loginPage.login(user.payload.email, user.payload.password);
+    const loginAPIResponse = await loginPage.login(user.payload.email, user.payload.password);
+    loginResponses.set(workerIndex, loginAPIResponse.responseBody);
+    APIParametersBase.setToken("Bearer " + loginAPIResponse.responseBody.authentication.token);
 
     await use(page);
   },

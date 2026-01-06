@@ -14,4 +14,8 @@ export default class BasketItemsAPI extends APIEndpointBase {
   postBasketItems(payload?: BasketItemsPayload) {
     return this.action({ method: "POST", body: payload });
   }
+
+  deleteBasketItems(userId?: string) {
+    return this.action({ method: "DELETE", url: userId ? userId : null });
+  }
 }

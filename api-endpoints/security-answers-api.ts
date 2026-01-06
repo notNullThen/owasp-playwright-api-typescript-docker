@@ -1,5 +1,5 @@
 import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
-import { ResponseType } from "./types/general-types";
+import { ResponseBase } from "./types/general-types";
 
 type Data = {
   id: number;
@@ -10,7 +10,7 @@ type Data = {
   createdAt: Date;
 };
 
-export type SecurityQuestionResponse = ResponseType<Data>;
+export type SecurityQuestionResponse = ResponseBase<Data>;
 
 export type SecurityAnswersPayload = {
   UserId: number;
