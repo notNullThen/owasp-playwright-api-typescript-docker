@@ -14,7 +14,7 @@ export default abstract class PageBase {
     return this.page.locator(".heading");
   }
 
-  async goto() {
+  async goto(): Promise<any> {
     await this.page.goto(this.url);
   }
 }

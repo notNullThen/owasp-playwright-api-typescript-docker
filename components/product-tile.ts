@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import ComponentBase from "./component-base";
 import Utils from "../support/utils";
 
@@ -22,6 +22,17 @@ export default class ProductTile extends ComponentBase {
   async getPriceValue() {
     const priceText = await this.price.innerText();
     return Utils.getPriceFromText(priceText);
+  }
+
+  async addToBasket() {
+    return await test.step(`Add product '${await this.itemName.innerText()}' to basket`, async () => {
+      const [, basketItemsResponse] = await Promise.all([
+        this.addToBasketButton.click(),
+        this.api.basketItems.postBasketItems().wait(),
+      ]);
+
+      return basketItemsResponse;
+    });
   }
 
   getByName(name: string) {

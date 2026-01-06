@@ -12,4 +12,10 @@ export const productsData = {
     price: 4.99,
     soldOut: false,
   } as Product,
+  bananaJuice: {
+    name: "Banana Juice (1000ml)",
+    description: "Monkeys love it the most.",
+    price: 1.99,
+    soldOut: true,
+  },
 };
