@@ -20,7 +20,7 @@ export const additionalConfig = {
   // Configuration for waiting for the base URL to be ready before all tests run
   // Resolves Docker container startup lag
   baseUrlReady: {
-    retries: 30,
+    retries: 5,
     delay: 1 * 1000,
   },
 };
