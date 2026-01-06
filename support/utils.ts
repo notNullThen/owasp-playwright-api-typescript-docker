@@ -42,28 +42,6 @@ export default class Utils {
     return process.env.CI ? "http://juice-shop:3000" : "http://localhost:3000";
   }
 
-  static connectUrlParts(...parts: string[]) {
-    const connectedParts = parts
-      .filter((part) => part)
-      .map((part) => this.normalizeUrl(part))
-      .filter((part) => part.trim().length > 0)
-      .join("/");
-
-    return connectedParts + "/";
-  }
-
-  static normalizeUrl(url: string) {
-    return this.removeLeadingSlash(this.removeTrailingSlash(url));
-  }
-
-  static removeTrailingSlash(url: string) {
-    return url.endsWith("/") ? url.slice(0, -1) : url;
-  }
-
-  static removeLeadingSlash(url: string) {
-    return url.startsWith("/") ? url.slice(1) : url;
-  }
-
   // Waits for the base URL to be ready before all tests run
   // Resolves Docker container startup lag
   static async waitForBaseUrlReady() {

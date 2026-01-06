@@ -1,6 +1,4 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
-import { additionalConfig } from "../playwright.config";
-import Utils from "../support/utils";
 import APIParametersBase from "./api-parameters-base";
 
 export default abstract class APIBase extends APIParametersBase {
@@ -10,10 +8,13 @@ export default abstract class APIBase extends APIParametersBase {
     return await test.step(`Request ${this.method} "${this.route}", expect ${this.expectedStatusCodes.join(
       ", "
     )}`, async () => {
-      // @ts-expect-error we use string to define what http-method function we want to call, so initially TS complains here
-      const response: APIResponse = await context[this.method.toLowerCase()](this.fullURL, {
-        data: this.params.body,
-        timeout: additionalConfig.apiWaitTimeout,
+      const response: APIResponse = await context.fetch(this.fullURL, {
+        method: this.method,
+        headers: {
+          Authorization: APIParametersBase.token,
+        },
+        data: this.body,
+        timeout: this.apiWaitTimeout,
       });
 
       this.actualStatusCode = response.status();
@@ -30,8 +31,8 @@ export default abstract class APIBase extends APIParametersBase {
       const response = await context.waitForResponse(
         (response) => {
           // Ignore trailing slash and casing differences
-          const actualUrl = Utils.normalizeUrl(response.url());
-          const expectedUrl = Utils.normalizeUrl(this.fullURL);
+          const actualUrl = this.normalizeUrl(response.url());
+          const expectedUrl = this.normalizeUrl(this.fullURL);
           const requestMethod = response.request().method();
 
           if (!actualUrl.toLowerCase().includes(expectedUrl.toLowerCase())) return false;
