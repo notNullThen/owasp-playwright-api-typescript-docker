@@ -3,7 +3,7 @@ services:
     image: bkimminich/juice-shop:latest
     container_name: juice-shop
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     healthcheck:
       test:
         [
