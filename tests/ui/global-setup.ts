@@ -54,7 +54,11 @@ export const test = baseTest.extend<unknown, { createdUser?: User; loginResponse
     const loginAPIResponse = await loginPage.login(user.payload.email, user.payload.password);
 
     loginResponses.set(workerIndex, loginAPIResponse.responseBody);
+
     const token = formatBearerToken(loginAPIResponse.responseBody.authentication.token);
+    // It was decided to use own token handling implementation,
+    // as somehow "await page.setExtraHTTPHeaders({ Authorization: token });" is not wokring properly:
+    // "Basket shows correct details" test fails with 401 response.
     APIParametersBase.setToken(token);
 
     await use(page);
