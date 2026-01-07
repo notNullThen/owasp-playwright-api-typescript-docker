@@ -7,6 +7,7 @@ import Utils from "../../support/utils";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
 import APIParametersBase from "../../api-base/api-parameters-base";
+import { formatBearerToken } from "../../api-base/Helpers/bearer-token";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();
@@ -51,8 +52,10 @@ export const test = baseTest.extend<unknown, { createdUser?: User; loginResponse
 
     await loginPage.goto();
     const loginAPIResponse = await loginPage.login(user.payload.email, user.payload.password);
+
     loginResponses.set(workerIndex, loginAPIResponse.responseBody);
-    APIParametersBase.setToken("Bearer " + loginAPIResponse.responseBody.authentication.token);
+    const token = formatBearerToken(loginAPIResponse.responseBody.authentication.token);
+    APIParametersBase.setToken(token);
 
     await use(page);
   },
