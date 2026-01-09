@@ -51,7 +51,7 @@ The project is configured to run tests in Docker using official Playwright NodeJ
 
 ```bash
 git clone https://github.com/notNullThen/owasp-playwright-api-typescript-docker.git
-cd owasp-js-playwright-api-typescript
+cd owasp-playwright-api-typescript-docker
 ```
 
 2. Create `.env` file from `.env.example` file
@@ -93,7 +93,7 @@ docker run --rm -p 3000:3000 bkimminich/juice-shop:latest
 
 ```bash
 git clone https://github.com/notNullThen/owasp-playwright-api-typescript-docker.git
-cd owasp-js-playwright-api-typescript
+cd owasp-playwright-api-typescript-docker
 ```
 
 3. Install NPM packages & Playwright dependencies:
