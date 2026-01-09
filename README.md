@@ -41,7 +41,7 @@ Playwright tracing is enabled in [playwright.config.ts](playwright.config.ts) (u
 
 ## Running tests
 
-### Docker
+### Docker (recommended)
 
 The project is configured to run tests in Docker using official Playwright NodeJS Docker image.
 
@@ -70,6 +70,16 @@ This will:
 
 - Start OWASP Juice Shop on `http://juice-shop:3000`
 - Run the test suite and serve the Allure report.
+
+### GitHub Codespaces
+
+1. Wait till all the commands in Codespace are executed (as a result, the `.env` file should appear)
+
+1. Run all tests with opening Allure reports:
+
+```bash
+npm run test-all-allure
+```
 
 ### Local (run tests on your machine)
 
