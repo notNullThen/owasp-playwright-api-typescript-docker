@@ -1,13 +1,13 @@
 /* See https://playwright.dev/docs/auth#moderate-one-account-per-parallel-worker */
 
 import { test as baseTest } from "@playwright/test";
-import { acquireAccount } from "../../support/data-management";
-import LoginPage from "../../pages/login-page";
-import Utils from "../../support/utils";
-import { User } from "../../api-endpoints/users-api";
-import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import APIParametersBase from "../../api-base/api-parameters-base";
-import { formatBearerToken } from "../../api-base/Helpers/bearer-token";
+import { acquireAccount } from "../support/data-management";
+import LoginPage from "../pages/login-page";
+import Utils from "../support/utils";
+import { User } from "../api-endpoints/users-api";
+import { LoginResponse } from "../api-endpoints/rest-user-api";
+import APIParametersBase from "../api-base/api-parameters-base";
+import { formatBearerToken } from "../api-base/Helpers/bearer-token";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();

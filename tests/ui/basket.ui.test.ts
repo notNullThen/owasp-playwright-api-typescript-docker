@@ -3,7 +3,7 @@ import BasketPage from "../../pages/basket-page";
 import HomePage from "../../pages/home-page";
 import { addProductToBasket } from "../../support/helpers/basket-helper";
 import { getProductByName } from "../../support/helpers/product-hepler";
-import { expect, test } from "./global-setup";
+import { expect, test } from "../global-setup";
 
 test("Can search and add product to basket", async ({ page }) => {
   const homePage = new HomePage(page);
