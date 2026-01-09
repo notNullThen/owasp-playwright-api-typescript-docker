@@ -14,21 +14,21 @@ test("User can register successfully", async ({ createdUser }) => {
 
   expect(responseData.isActive, "IsActive should be true for a newly registered user").toBe(true);
 
-  /* Nulls and Empty checks */
+  await test.step("Nulls and Empty checks", async () => {
+    expect(responseData.createdAt, "CreatedAt should not be null or whitespace").not.toBeNull();
+    expect(responseData.createdAt.toString().trim().length).toBeGreaterThan(0);
 
-  expect(responseData.createdAt, "CreatedAt should not be null or whitespace").not.toBeNull();
-  expect(responseData.createdAt.toString().trim().length).toBeGreaterThan(0);
+    expect(responseData.deletedAt, "DeletedAt should be null or empty").toBeNull();
+    expect(responseData.lastLoginIp, "LastLoginIp should not be null or whitespace").not.toBeNull();
+    expect(responseData.lastLoginIp.trim().length).toBeGreaterThan(0);
 
-  expect(responseData.deletedAt, "DeletedAt should be null or empty").toBeNull();
-  expect(responseData.lastLoginIp, "LastLoginIp should not be null or whitespace").not.toBeNull();
-  expect(responseData.lastLoginIp.trim().length).toBeGreaterThan(0);
+    expect(responseData.profileImage, "ProfileImage should not be null or whitespace").not.toBeNull();
+    expect(responseData.profileImage.trim().length).toBeGreaterThan(0);
 
-  expect(responseData.profileImage, "ProfileImage should not be null or whitespace").not.toBeNull();
-  expect(responseData.profileImage.trim().length).toBeGreaterThan(0);
+    expect(responseData.role, "Role should not be null or whitespace").not.toBeNull();
+    expect(responseData.role.trim().length).toBeGreaterThan(0);
 
-  expect(responseData.role, "Role should not be null or whitespace").not.toBeNull();
-  expect(responseData.role.trim().length).toBeGreaterThan(0);
-
-  expect(responseData.updatedAt, "UpdatedAt should not be null or whitespace").not.toBeNull();
-  expect(responseData.updatedAt.toString().trim().length).toBeGreaterThan(0);
+    expect(responseData.updatedAt, "UpdatedAt should not be null or whitespace").not.toBeNull();
+    expect(responseData.updatedAt.toString().trim().length).toBeGreaterThan(0);
+  });
 });
