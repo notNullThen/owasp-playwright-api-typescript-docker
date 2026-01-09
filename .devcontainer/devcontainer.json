@@ -1,5 +1,13 @@
 {
   "name": "Playwright Dev Container",
   "image": "mcr.microsoft.com/playwright:v1.57.0-noble",
-  "postCreateCommand": "npm i && cp .env.example .env"
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    }
+  },
+  "postCreateCommand": "npm i",
+  "postStartCommand": "docker run -d --rm -p 127.0.0.1:3000:3000 bkimminich/juice-shop && cp .env.example .env",
+  "remoteUser": "root"
 }
