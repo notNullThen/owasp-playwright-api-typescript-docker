@@ -64,6 +64,10 @@ export default defineConfig({
       testMatch: /.*ui\.test\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "API",
+      testMatch: /.*\.api.test\.ts/,
+    },
 
     // {
     //   name: "firefox",
