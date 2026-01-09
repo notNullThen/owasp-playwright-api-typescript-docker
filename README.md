@@ -4,7 +4,7 @@ Portfolio project showcasing an **SDET-friendly test framework on top of Playwri
 
 ## Playwright C#/.NET version
 
-Also available as a Playwright C#/.NET version: https://github.com/notNullThen/owasp-playwright-api-typescript-docker
+Also available as a Playwright C#/.NET version: https://github.com/notNullThen/owasp-playwright-api-csharp-docker
 
 ## Project overview
 
