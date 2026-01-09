@@ -10,12 +10,17 @@ export type LoginResponse = {
   authentication: Authentication;
 };
 
+type LoginPayload = {
+  email: string;
+  password: string;
+};
+
 export default class RestUserAPI extends APIEndpointBase {
   constructor(context: APIContext) {
     super(context, "rest/user");
   }
 
-  postLogin() {
-    return this.action<LoginResponse>({ url: "/login", method: "POST" });
+  postLogin(payload?: LoginPayload) {
+    return this.action<LoginResponse>({ url: "/login", method: "POST", body: payload });
   }
 }
