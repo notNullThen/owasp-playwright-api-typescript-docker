@@ -22,9 +22,14 @@ This suite demonstrates framework capabilities and a core testing strategy. More
 
 Allure is used via `npx` (local install in the repo), and results are stored under `./allure/allure-results`.
 
+In Docker, Allure is installed and the report is served automatically.
+
 ### Traces
 
 Playwright tracing is enabled in [playwright.config.ts](playwright.config.ts) (useful for demo/debug, including successful runs depending on Playwright retention settings).
+
+- Traces are saved under `test-results` as `.zip`
+- Each test trace is also attached to Allure
 
 ## Benefits / what this demonstrates
 
@@ -68,14 +73,14 @@ docker compose up playwright --build
 
 This will:
 
-- Start OWASP Juice Shop on `http://juice-shop:3000`
-- Run the test suite and serve the Allure report.
+- Start OWASP Juice Shop on `http://localhost:3000`
+- Run the full test suite (API + UI) and serve the Allure report at `http://localhost:8080`
 
 ### GitHub Codespaces
 
-1. Wait till all the commands in Codespace are executed (as a result, the `.env` file should appear)
+1. Wait until all the Codespace init commands complete (the `.env` file should appear)
 
-1. Run all tests with opening Allure reports:
+2. Run all tests with opening Allure reports:
 
 ```bash
 npm run test-all-allure
@@ -120,6 +125,13 @@ Environment variables are loaded via `dotenv` in [playwright.config.ts](playwrig
 
 ❗️ For demonstration and convenience purposes the `.env.example` already contains values.
 
+### Base URL selection
+
+Base URL switches automatically in Docker/CI:
+
+- Locally (no `CI` env var): `http://localhost:3000`
+- In Compose/CI (`CI=true`): `http://juice-shop:3000`
+
 ## Running options
 
 Scripts are defined in [package.json](package.json):
@@ -128,6 +140,42 @@ Scripts are defined in [package.json](package.json):
 
 ```bash
 npm run test-all
+```
+
+- Run API tests only:
+
+```bash
+npm run test-api
+```
+
+- Run UI tests only:
+
+```bash
+npm run test-ui
+```
+
+- Run all tests (without npm scripts):
+
+```bash
+npx playwright test
+```
+
+- Run API tests only (without npm scripts):
+
+```bash
+npx playwright test --project=API
+```
+
+- Run UI tests only (without npm scripts):
+
+```bash
+npx playwright test --project=UI
+```
+
+- Run a single test file (example):
+
+```bash
+npx playwright test tests/ui/users.ui.test.ts --project=UI
 ```
 
 - Open Playwright UI mode:
@@ -152,13 +200,13 @@ npx eslint .
 
 ## API tooling
 
-The API tooling layer is located under [api/base/](api/base/). It provides a fluent interface for defining endpoints once and reusing them across both API and UI tests.
+The API tooling layer is located under [api-base/](api-base/). It provides a fluent interface for defining endpoints once and reusing them across both API and UI tests.
 
 ### Architecture
 
-- [api/base/api-base.ts](api/base/api-base.ts): exposes `action(...).request()` and `action(...).wait()` depending on context
-- [api/base/api-endpoint-base.ts](api/base/api-endpoint-base.ts): executes requests / waits for responses, parses JSON, validates status codes
-- [api/base/api-parameters-base.ts](api/base/api-parameters-base.ts): builds normalized URLs and clones request definitions to avoid race conditions under `Promise.all`
+- [api-base/api-endpoint-base.ts](api-base/api-endpoint-base.ts): exposes `action(...).request()` and `action(...).wait()` depending on context
+- [api-base/api-base.ts](api-base/api-base.ts): executes requests / waits for responses, parses JSON, validates status codes
+- [api-base/api-parameters-base.ts](api-base/api-parameters-base.ts): builds normalized URLs, stores base URL / token, and clones request definitions to avoid race conditions under `Promise.all`
 
 ### Usage examples
 
@@ -166,7 +214,7 @@ The API tooling layer is located under [api/base/](api/base/). It provides a flu
 
 ```ts
 import { test } from "@playwright/test";
-import API from "./api/api";
+import API from "./api-endpoints/api";
 
 test("create user via API", async ({ request }) => {
   var userPayload = { ... };
@@ -184,16 +232,20 @@ const [, loginResponse] = await Promise.all([this.loginButton.click(), this.api.
 
 ## Auth & parallel execution
 
-Worker-scoped auth is implemented in [tests/ui/global-setup.ts](tests/ui/global-setup.ts). Tests can opt out by including `[no-autologin]` in the test title.
+- API auth is applied via a bearer token set on the API tooling (`APIParametersBase.setToken(...)`).
+- Worker-scoped auth is implemented in [tests/global-setup.ts](tests/global-setup.ts). Tests can opt out by including `[no-autologin]` in the test title.
+- API endpoint wrappers are constructed per-test using the Playwright `request` context (see [api-endpoints/api.ts](api-endpoints/api.ts)).
 
 ## Example tests
 
-- Auth flows: [tests/ui/auth.ui.test.ts](tests/ui/auth.ui.test.ts)
+- API auth flow: [tests/api/authentication.api.test.ts](tests/api/authentication.api.test.ts)
+- UI auth flows: [tests/ui/users.ui.test.ts](tests/ui/users.ui.test.ts)
 - Search flow: [tests/ui/search.ui.test.ts](tests/ui/search.ui.test.ts)
 
 ## Project structure
 
-- [api/](api/) — API client wrappers and tooling
+- [api-endpoints/](api-endpoints/) — API client wrappers + endpoint definitions
+- [api-base/](api-base/) — API tooling (request + wait abstraction)
 - [pages/](pages/) — Page Objects
 - [components/](components/) — reusable UI Components
 - [tests/](tests/) — test specs
