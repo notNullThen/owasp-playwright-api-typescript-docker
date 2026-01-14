@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-all": "npm run test-api && npm run test-ui",
+    "test-all": "npm run test-api; npm run test-ui",
     "test-ui": "npx playwright test --project=UI",
     "test-api": "npx playwright test --project=API",
     "test-viewer": "npx playwright test --ui",
