@@ -1,4 +1,4 @@
-import { expect, test } from "../global-setup";
+import { expect, test } from "./global-api-setup";
 
 test("User can register successfully", async ({ createdUser }) => {
   const payloadData = createdUser.payload;

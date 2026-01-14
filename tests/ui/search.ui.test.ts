@@ -1,6 +1,6 @@
 import HomePage from "../../pages/home-page";
 import { productsData } from "../../data/products-data";
-import { expect, test } from "../global-setup";
+import { expect, test } from "./global-ui-setup";
 
 test("Can search for name", async ({ page }) => {
   const homePage = new HomePage(page);

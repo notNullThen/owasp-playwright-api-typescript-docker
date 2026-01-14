@@ -1,5 +1,5 @@
 import API from "../../api-endpoints/api";
-import { expect, test } from "../global-setup";
+import { expect, test } from "./global-api-setup";
 
 test("Can search for products", async ({ request }) => {
   const api = new API(request);

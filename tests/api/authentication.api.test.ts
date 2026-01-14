@@ -1,5 +1,5 @@
 import API from "../../api-endpoints/api";
-import { expect, test } from "../global-setup";
+import { expect, test } from "./global-api-setup";
 
 test("User can authenticate successfully", async ({ request, createdUser }) => {
   const api = new API(request);
