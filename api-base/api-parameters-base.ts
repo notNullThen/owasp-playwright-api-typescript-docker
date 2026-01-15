@@ -12,7 +12,6 @@ export default abstract class APIParametersBase {
   protected static initialApiWaitTimeout: number;
   protected static initialExpectedStatusCodes: number[];
   protected static baseURL: string;
-  protected static token?: string;
 
   protected apiWaitTimeout: number;
   protected expectedStatusCodes: number[];
@@ -37,10 +36,6 @@ export default abstract class APIParametersBase {
     clone.body = params.body;
 
     return clone as this;
-  }
-
-  public static setToken(token: string) {
-    this.token = token;
   }
 
   public static setInitialConfig(options: { apiWaitTimeout: number; expectedStatusCodes: number[]; baseURL: string }) {

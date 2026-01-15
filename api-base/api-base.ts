@@ -1,5 +1,6 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
 import APIParametersBase from "./api-parameters-base";
+import { tokenStorage } from "./Helpers/token-storage";
 
 export default abstract class APIBase extends APIParametersBase {
   private actualStatusCode: number;
@@ -11,7 +12,7 @@ export default abstract class APIBase extends APIParametersBase {
       const response: APIResponse = await context.fetch(this.fullURL, {
         method: this.method,
         headers: {
-          Authorization: APIParametersBase.token,
+          Authorization: tokenStorage.get(context) || "",
         },
         data: this.body,
         timeout: this.apiWaitTimeout,

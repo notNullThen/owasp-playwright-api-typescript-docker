@@ -4,9 +4,9 @@ import { APIRequestContext, test as baseTest, request } from "@playwright/test";
 import { acquireAccount } from "../../support/data-management";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import APIParametersBase from "../../api-base/api-parameters-base";
 import { formatBearerToken } from "../../api-base/Helpers/bearer-token";
 import API from "../../api-endpoints/api";
+import { tokenStorage } from "../../api-base/Helpers/token-storage";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();
@@ -70,7 +70,7 @@ async function loginToCurrentUser(request?: APIRequestContext) {
   // It was decided to use own token handling implementation,
   // as somehow "await page.setExtraHTTPHeaders({ Authorization: token });" is not wokring properly:
   // "Basket shows correct details" test fails with 401 response.
-  APIParametersBase.setToken(token);
+  if (request) tokenStorage.set(request, token);
 
   return loginAPIResponse.responseBody;
 }
