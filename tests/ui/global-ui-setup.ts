@@ -6,8 +6,8 @@ import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import { formatBearerToken } from "../../api-base/Helpers/bearer-token";
-import { tokenStorage } from "../../api-base/Helpers/token-storage";
+import { formatBearerToken } from "../../api-base/helpers/bearer-token";
+import { tokenStorage } from "../../api-base/helpers/token-storage";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();

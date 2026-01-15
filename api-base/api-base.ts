@@ -1,6 +1,6 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
 import APIParametersBase from "./api-parameters-base";
-import { tokenStorage } from "./Helpers/token-storage";
+import { tokenStorage } from "./helpers/token-storage";
 
 export default abstract class APIBase extends APIParametersBase {
   private actualStatusCode: number;
