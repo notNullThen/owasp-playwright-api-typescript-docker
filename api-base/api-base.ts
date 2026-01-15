@@ -55,6 +55,11 @@ export default abstract class APIBase extends APIParametersBase {
       const responseBody = responseObject as T;
       return { response, responseBody };
     } catch {
+      try {
+        console.error(`Failed to parse JSON response from ${response.url()}: ${await response.text()}`);
+      } catch {
+        // Ignore any errors while logging
+      }
       return { response, responseBody: null };
     }
   }
