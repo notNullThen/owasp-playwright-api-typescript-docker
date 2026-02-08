@@ -1,4 +1,4 @@
-import test, { expect, Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import MenuBase from "./menu-base";
 import Utils from "../support/utils";
 
@@ -13,13 +13,13 @@ export default class AccountMenu extends MenuBase {
 
   async open() {
     await test.step(`Open ${this.componentName}`, async () => {
-      if (!(await this.isOpen())) {
+      const isOpen = await this.isOpen();
+      if (!isOpen) {
         await this.body.click();
         await Utils.waitForElementToBeStable(this.menu);
       }
-      // Here we use Playwright's expect().toBeVisible() instead of isOpen() for waiting until the menu is visible
-      // and avoid potential timing issues.
-      await expect(this.menu).toBeVisible();
+
+      await this.menu.waitFor({ state: "visible" });
     });
   }
 }
