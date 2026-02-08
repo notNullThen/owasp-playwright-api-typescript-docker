@@ -16,17 +16,17 @@ export default class RegistrationPage extends PageBase {
   }
   get repeatPasswordInput() {
     return new InputFormField({ componentName: "Repeat password", page: this.page }).getByLocator(
-      "#repeatPasswordControl"
+      "#repeatPasswordControl",
     );
   }
   get securityQuestionDropdown() {
     return new DropdownFormField({ componentName: "Security question", page: this.page }).getByName(
-      "security question"
+      "security question",
     );
   }
   get answerInput() {
     return new InputFormField({ componentName: "Security answer", page: this.page }).getByLocator(
-      "#securityAnswerControl"
+      "#securityAnswerControl",
     );
   }
   get registerButton() {
