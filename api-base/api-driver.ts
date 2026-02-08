@@ -11,16 +11,16 @@ export type RequestParameters = {
   apiWaitTimeout?: number;
 };
 
-export default class APIBase {
+export default class APIDriver {
   constructor(
     protected apiBaseURL: string,
     params: RequestParameters,
   ) {
     this.fullURL = this.connectUrlParts(this.apiBaseURL, params.url || "");
-    this.route = this.fullURL.replace(this.connectUrlParts(APIBase.appBaseURL), "");
+    this.route = this.fullURL.replace(this.connectUrlParts(APIDriver.appBaseURL), "");
     this.method = params.method;
-    this.expectedStatusCodes = params.expectedStatusCodes ?? APIBase.initialExpectedStatusCodes;
-    this.apiWaitTimeout = params.apiWaitTimeout ?? APIBase.initialApiWaitTimeout;
+    this.expectedStatusCodes = params.expectedStatusCodes ?? APIDriver.initialExpectedStatusCodes;
+    this.apiWaitTimeout = params.apiWaitTimeout ?? APIDriver.initialApiWaitTimeout;
     this.body = params.body;
   }
 

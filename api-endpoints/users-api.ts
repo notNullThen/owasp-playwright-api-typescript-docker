@@ -1,4 +1,4 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import APIFactory, { APIContext } from "../api-base/api-endpoint-base";
 import CreatedData from "../data/created-data";
 import { ResponseBase } from "./types/general-types";
 
@@ -38,7 +38,7 @@ export type User = {
   payload: UserPayload;
 };
 
-export default class UsersAPI extends APIEndpointBase {
+export default class UsersAPI extends APIFactory {
   constructor(context: APIContext) {
     super(context, "api/users");
   }

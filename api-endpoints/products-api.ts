@@ -1,11 +1,11 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import APIFactory, { APIContext } from "../api-base/api-endpoint-base";
 import { RestBasketItemData } from "./rest-basket-api";
 import { ProductDataBase, ResponseBase } from "./types/general-types";
 
 type RestBasketProductData = ProductDataBase<RestBasketItemData>;
 type ProductsResponse = ResponseBase<RestBasketProductData[]>;
 
-export default class ProductsAPI extends APIEndpointBase {
+export default class ProductsAPI extends APIFactory {
   constructor(context: APIContext) {
     super(context, "rest/products");
   }

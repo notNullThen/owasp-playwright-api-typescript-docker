@@ -1,4 +1,4 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import APIFactory, { APIContext } from "../api-base/api-endpoint-base";
 import { ResponseBase } from "./types/general-types";
 
 type BasketItemsPayload = {
@@ -18,7 +18,7 @@ type BasketItemData = {
 
 type BasketItemsResponse = ResponseBase<BasketItemData>;
 
-export default class BasketItemsAPI extends APIEndpointBase {
+export default class BasketItemsAPI extends APIFactory {
   constructor(context: APIContext) {
     super(context, "api/BasketItems");
   }

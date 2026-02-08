@@ -4,7 +4,7 @@ import { APIContext } from "../../api-base/api-endpoint-base";
 
 export const addProductToBasket = async (
   options: { basketId: number; productId: number; quantity: number },
-  context: APIContext
+  context: APIContext,
 ) => {
   const { basketId, productId, quantity } = options;
 
