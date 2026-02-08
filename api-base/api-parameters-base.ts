@@ -13,11 +13,11 @@ export default abstract class APIParametersBase {
   protected static initialExpectedStatusCodes: number[];
   protected static baseURL: string;
 
-  protected apiWaitTimeout: number;
-  protected expectedStatusCodes: number[];
-  protected fullURL: string;
-  protected route: string;
-  protected method: HttpMethod;
+  protected apiWaitTimeout?: number;
+  protected expectedStatusCodes?: number[];
+  protected fullURL?: string;
+  protected route?: string;
+  protected method?: HttpMethod;
   protected body?: object;
 
   constructor(private baseAPIURL: string) {
@@ -25,17 +25,14 @@ export default abstract class APIParametersBase {
   }
 
   protected aquireParameters(params: RequestParameters) {
-    // Cloning the current instance to avoid racing conditions when calling API endpoints in parallel (Promise.all)
-    const clone = Object.create(this) as APIParametersBase;
+    this.fullURL = this.connectUrlParts(this.baseAPIURL, params.url || "");
+    this.route = this.fullURL.replace(this.connectUrlParts(APIParametersBase.baseURL), "");
+    this.method = params.method;
+    this.expectedStatusCodes = params.expectedStatusCodes ?? APIParametersBase.initialExpectedStatusCodes;
+    this.apiWaitTimeout = params.apiWaitTimeout ?? APIParametersBase.initialApiWaitTimeout;
+    this.body = params.body;
 
-    clone.fullURL = this.connectUrlParts(this.baseAPIURL, params.url);
-    clone.route = clone.fullURL.replace(this.connectUrlParts(APIParametersBase.baseURL), "");
-    clone.method = params.method;
-    clone.expectedStatusCodes = params.expectedStatusCodes ?? APIParametersBase.initialExpectedStatusCodes;
-    clone.apiWaitTimeout = params.apiWaitTimeout ?? APIParametersBase.initialApiWaitTimeout;
-    clone.body = params.body;
-
-    return clone as this;
+    return this;
   }
 
   public static setInitialConfig(options: { apiWaitTimeout: number; expectedStatusCodes: number[]; baseURL: string }) {
