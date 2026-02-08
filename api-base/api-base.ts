@@ -1,8 +1,40 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
-import APIParametersBase from "./api-parameters-base";
 import { tokenStorage } from "./helpers/token-storage";
 
-export default abstract class APIBase extends APIParametersBase {
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
+
+export type RequestParameters = {
+  url?: string | null;
+  method: HttpMethod;
+  expectedStatusCodes?: number[];
+  body?: object;
+  apiWaitTimeout?: number;
+};
+
+export default class APIBase {
+  constructor(
+    protected apiBaseURL: string,
+    params: RequestParameters,
+  ) {
+    this.fullURL = this.connectUrlParts(this.apiBaseURL, params.url || "");
+    this.route = this.fullURL.replace(this.connectUrlParts(APIBase.appBaseURL), "");
+    this.method = params.method;
+    this.expectedStatusCodes = params.expectedStatusCodes ?? APIBase.initialExpectedStatusCodes;
+    this.apiWaitTimeout = params.apiWaitTimeout ?? APIBase.initialApiWaitTimeout;
+    this.body = params.body;
+  }
+
+  protected static initialApiWaitTimeout: number;
+  protected static initialExpectedStatusCodes: number[];
+  protected static appBaseURL: string;
+
+  protected apiWaitTimeout: number;
+  protected expectedStatusCodes: number[];
+  protected fullURL: string;
+  protected route: string;
+  protected method: HttpMethod;
+  protected body?: object;
+
   public async request<T>(context: APIRequestContext) {
     return await test.step(`Request ${this.method} "${this.route}", expect ${this.expectedStatusCodes.join(
       ", ",
@@ -44,6 +76,35 @@ export default abstract class APIBase extends APIParametersBase {
 
       return await this.getResponse<T>(response);
     });
+  }
+
+  public static setInitialConfig(options: { apiWaitTimeout: number; expectedStatusCodes: number[]; baseURL: string }) {
+    const { apiWaitTimeout, expectedStatusCodes, baseURL } = options;
+    this.initialApiWaitTimeout = apiWaitTimeout;
+    this.initialExpectedStatusCodes = expectedStatusCodes;
+    this.appBaseURL = baseURL;
+  }
+
+  protected connectUrlParts(...parts: string[]) {
+    const connectedParts = parts
+      .filter((part) => part)
+      .map((part) => this.normalizeUrl(part))
+      .filter((part) => part.trim().length > 0)
+      .join("/");
+
+    return connectedParts;
+  }
+
+  protected normalizeUrl(url: string) {
+    return this.removeLeadingSlash(this.removeTrailingSlash(url));
+  }
+
+  private removeTrailingSlash(url: string) {
+    return url.endsWith("/") ? url.slice(0, -1) : url;
+  }
+
+  private removeLeadingSlash(url: string) {
+    return url.startsWith("/") ? url.slice(1) : url;
   }
 
   private async getResponse<T>(response: APIResponse | Response) {

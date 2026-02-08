@@ -1,18 +1,18 @@
 import { APIRequestContext, Page } from "@playwright/test";
-import APIBase from "./api-base";
-import { RequestParameters } from "./api-parameters-base";
+import APIBase, { RequestParameters } from "./api-base";
 
 export type APIContext = Page | APIRequestContext;
 
-export default abstract class APIEndpointBase extends APIBase {
-  constructor(private context: APIContext, baseURL: string) {
-    super(baseURL);
-  }
+export default abstract class APIEndpointBase {
+  constructor(
+    private context: APIContext,
+    private baseURL: string,
+  ) {}
 
   public action<T>(params: RequestParameters) {
     return {
       request: async () => {
-        return await this.aquireParameters(params).request<T>(this.context as APIRequestContext);
+        return await new APIBase(this.baseURL, params).request<T>(this.context as APIRequestContext);
       },
 
       wait: async () => {
@@ -21,7 +21,7 @@ export default abstract class APIEndpointBase extends APIBase {
           throw new Error("You can use wait() only in the context of UI Tests (context should be of 'Page' type)");
         }
 
-        return await this.aquireParameters(params).wait<T>(this.context as Page);
+        return await new APIBase(this.baseURL, params).wait<T>(this.context as Page);
       },
     };
   }

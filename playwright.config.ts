@@ -3,7 +3,7 @@ import path from "node:path";
 import dotenv from "dotenv";
 import assert from "node:assert";
 import Utils from "./support/utils";
-import APIParametersBase from "./api-base/api-parameters-base";
+import APIBase from "./api-base/api-base";
 
 /**
  * Read environment variables from file.
@@ -25,7 +25,7 @@ export const additionalConfig = {
   },
 };
 
-APIParametersBase.setInitialConfig({
+APIBase.setInitialConfig({
   apiWaitTimeout: additionalConfig.apiWaitTimeout,
   expectedStatusCodes: additionalConfig.expectedAPIResponseCodes,
   baseURL: Utils.getBaseUrl(),
