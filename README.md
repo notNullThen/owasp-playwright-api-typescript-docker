@@ -61,25 +61,31 @@ npx allure serve ./allure/allure-results
 docker run --rm -p 3000:3000 bkimminich/juice-shop:latest
 ```
 
-2. Create env file and run tests:
-
-```bash
-cp .env.example .env
-npm i
-npm run test-all
-```
-
-If Playwright dependencies aren’t installed yet:
+2. Install Playwright dependencies:
 
 ```bash
 npx playwright install --with-deps
 ```
 
-Allure locally (optional):
+3. Install Allure as global dependency:
 
 ```bash
 npm i -g allure
 allure serve ./allure/allure-results --port 8080
+```
+
+4. Create env file:
+
+```bash
+cp .env.example .env
+```
+
+5. Run tests with Allure reporting:
+
+```bash
+
+npm i
+npm run test-all-allure
 ```
 
 ## Suites / filtering
