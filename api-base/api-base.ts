@@ -3,11 +3,9 @@ import APIParametersBase from "./api-parameters-base";
 import { tokenStorage } from "./helpers/token-storage";
 
 export default abstract class APIBase extends APIParametersBase {
-  private actualStatusCode: number;
-
   public async request<T>(context: APIRequestContext) {
     return await test.step(`Request ${this.method} "${this.route}", expect ${this.expectedStatusCodes.join(
-      ", "
+      ", ",
     )}`, async () => {
       const response: APIResponse = await context.fetch(this.fullURL, {
         method: this.method,
@@ -18,8 +16,7 @@ export default abstract class APIBase extends APIParametersBase {
         timeout: this.apiWaitTimeout,
       });
 
-      this.actualStatusCode = response.status();
-      this.validateStatusCode();
+      this.validateStatusCode(response.status());
 
       return await this.getResponse<T>(response);
     });
@@ -27,7 +24,7 @@ export default abstract class APIBase extends APIParametersBase {
 
   public async wait<T>(context: Page) {
     return await test.step(`Wait for ${this.method} "${this.route}" ${this.expectedStatusCodes.join(
-      ", "
+      ", ",
     )}`, async () => {
       const response = await context.waitForResponse(
         (response) => {
@@ -40,37 +37,26 @@ export default abstract class APIBase extends APIParametersBase {
           if (requestMethod.toLowerCase() !== this.method.toLowerCase()) return false;
           return true;
         },
-        { timeout: this.apiWaitTimeout }
+        { timeout: this.apiWaitTimeout },
       );
 
-      this.actualStatusCode = response.status();
-      this.validateStatusCode();
+      this.validateStatusCode(response.status());
 
       return await this.getResponse<T>(response);
     });
   }
 
   private async getResponse<T>(response: APIResponse | Response) {
-    try {
-      const responseObject = await response.json();
-      const responseBody = responseObject as T;
-      return { response, responseBody };
-    } catch {
-      try {
-        console.error(`Failed to parse JSON response from ${response.url()}: ${await response.text()}`);
-      } catch {
-        // Ignore any errors while logging
-      }
-      return { response, responseBody: null };
-    }
+    const responseObject = await response.json();
+    return { response, responseBody: responseObject as T };
   }
 
-  private validateStatusCode() {
-    if (!this.expectedStatusCodes.includes(this.actualStatusCode)) {
+  private validateStatusCode(statusCode: number) {
+    if (!this.expectedStatusCodes.includes(statusCode)) {
       throw new Error(
-        `Expected to return ${this.expectedStatusCodes.join(", ")}, but got ${this.actualStatusCode}.\nEndpoint: ${
+        `Expected to return ${this.expectedStatusCodes.join(", ")}, but got ${statusCode}.\nEndpoint: ${
           this.method
-        } ${this.route} `
+        } ${this.route} `,
       );
     }
   }
