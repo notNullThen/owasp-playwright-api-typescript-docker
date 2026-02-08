@@ -1,3 +1,5 @@
+## 🔜 Work in progress
+
 # OWASP Juice Shop — Playwright UI + API Test Framework (TypeScript/Node.js)
 
 Portfolio project demonstrating an **SDET-friendly** automation framework for the OWASP Juice Shop app: **Playwright UI + API testing**, a reusable **API tooling layer** (request + wait), **Allure 3 reporting**, and **Dockerized execution**.
