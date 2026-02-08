@@ -43,7 +43,7 @@ export default class ProductRow extends ComponentBase {
     return this.getByIndex(index);
   }
 
-  async getIndexByName(productName: string) {
+  async getIndexByName(productName: string): Promise<number> {
     const rowsCount = await this.count();
 
     for (let i = 0; i < rowsCount; i++) {
@@ -53,9 +53,8 @@ export default class ProductRow extends ComponentBase {
       if (productName === actualProductName) {
         return i;
       }
-
-      throw new Error(`Product with name '${productName}' not found in basket`);
     }
+    throw new Error(`Product with name '${productName}' not found in basket`);
   }
 
   getByIndex(index: number) {

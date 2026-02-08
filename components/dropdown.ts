@@ -5,21 +5,8 @@ import Utils from "../support/utils";
 export default class DropdownFormField extends FormFieldBase {
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
     const { componentName: name, page, parent } = options;
-
-    const parentOrPage = parent || page;
-    if (!parentOrPage) {
-      throw new Error("Either Page or parent Locator must be provided");
-    }
-
     super(name, page, parent);
     this.body = this.body.filter({ has: this.page.getByRole("combobox") });
-
-    if (parent) {
-      this.page = parent.page();
-    }
-    if (page) {
-      this.page = page;
-    }
   }
 
   get input() {

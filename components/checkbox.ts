@@ -3,16 +3,23 @@ import ComponentBase from "./component-base";
 
 export default class Checkbox extends ComponentBase {
   private checkedClass = "mdc-checkbox--selected";
-  private parent: Locator;
+  private parent?: Locator;
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    const { componentName, page = null, parent = null } = options;
-    if (!page && !parent) {
+    const { componentName, page, parent } = options;
+    const parentOrPage = parent || page;
+    if (!parentOrPage) {
       throw new Error("Either Page or parent Locator must be provided");
     }
-    super(componentName, (parent || page).locator("mat-checkbox"));
-    this.page = parent ? parent.page() : page;
+    super(componentName, parentOrPage.locator("mat-checkbox"));
     this.parent = parent;
+
+    if (parent) {
+      this.page = parent.page();
+    }
+    if (page) {
+      this.page = page;
+    }
   }
 
   get checkbox() {
@@ -46,6 +53,10 @@ export default class Checkbox extends ComponentBase {
   // So for demonstration purposes, we implement our own isChecked() method.
   async isChecked() {
     const classAttribute = await this.checkbox.getAttribute("class");
+    if (!classAttribute) {
+      throw new Error(`"${this.componentName}" has no any class attribute.`);
+    }
+
     return classAttribute.includes(this.checkedClass);
   }
 

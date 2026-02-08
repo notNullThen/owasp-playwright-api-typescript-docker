@@ -5,12 +5,11 @@ export default class InputFormField extends FormFieldBase {
   private errorClass = "mat-form-field-invalid" as const;
 
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    const { componentName: name, page = null, parent = null } = options;
+    const { componentName: name, page, parent } = options;
 
     super(name, page, parent);
 
     this.body = this.body.filter({ has: this.page.getByRole("textbox") });
-    this.page = parent ? parent.page() : page;
   }
 
   get input() {
@@ -61,6 +60,10 @@ export default class InputFormField extends FormFieldBase {
 
   async hasError() {
     const classAttribute = await this.body.getAttribute("class");
+    if (!classAttribute) {
+      throw new Error(`"${this.componentName}" has no any class attribute.`);
+    }
+
     return classAttribute.includes(this.errorClass);
   }
 
