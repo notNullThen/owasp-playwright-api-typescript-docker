@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
+    "strict": true,
     "paths": {
       "e2e/*": ["./e2e/*"]
     },
