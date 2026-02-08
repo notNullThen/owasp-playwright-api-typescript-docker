@@ -2,16 +2,24 @@ import test, { expect, Locator, Page } from "@playwright/test";
 import FormFieldBase from "./form-field-base";
 import Utils from "../support/utils";
 
-export default class Dropdown extends FormFieldBase {
+export default class DropdownFormField extends FormFieldBase {
   constructor(options: { componentName: string; page?: Page; parent?: Locator }) {
-    const { componentName: name, page = null, parent = null } = options;
+    const { componentName: name, page, parent } = options;
 
-    if (!page && !parent) {
+    const parentOrPage = parent || page;
+    if (!parentOrPage) {
       throw new Error("Either Page or parent Locator must be provided");
     }
+
     super(name, page, parent);
     this.body = this.body.filter({ has: this.page.getByRole("combobox") });
-    this.page = parent ? parent.page() : page;
+
+    if (parent) {
+      this.page = parent.page();
+    }
+    if (page) {
+      this.page = page;
+    }
   }
 
   get input() {
@@ -23,7 +31,11 @@ export default class Dropdown extends FormFieldBase {
   }
 
   getByName(name: string) {
-    const formField = new Dropdown({ componentName: this.componentName, page: this.page, parent: this.parent });
+    const formField = new DropdownFormField({
+      componentName: this.componentName,
+      page: this.page,
+      parent: this.parent,
+    });
     formField.body = this.body.filter({ has: this.page.getByRole("combobox", { name }) });
     return formField;
   }
