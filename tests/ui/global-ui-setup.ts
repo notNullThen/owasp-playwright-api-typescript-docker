@@ -16,7 +16,7 @@ export * from "@playwright/test";
 // As web-app we use for testing does't work well when authenticated storage is used,
 // we are moving away from documentation and implement autologin in the page fixture,
 // which is still good as we get separate user for each test (still supporting parallelism).
-export const test = baseTest.extend<object, { createdUser?: User; loginResponse?: LoginResponse }>({
+export const test = baseTest.extend<object, { createdUser?: User; loginResponse: LoginResponse }>({
   createdUser: [
     async ({}, use) => {
       const workerIndex = test.info().workerIndex;
@@ -27,7 +27,14 @@ export const test = baseTest.extend<object, { createdUser?: User; loginResponse?
   loginResponse: [
     async ({}, use) => {
       const workerIndex = test.info().workerIndex;
-      await use(loginResponses.get(workerIndex));
+      const loginResponse = loginResponses.get(workerIndex);
+      if (!loginResponse) {
+        throw new Error(
+          `Login response not found for worker index ${workerIndex}. Make sure to call loginToCurrentUser() in the page fixture.`,
+        );
+      }
+
+      await use(loginResponse);
     },
     { scope: "worker" },
   ],
