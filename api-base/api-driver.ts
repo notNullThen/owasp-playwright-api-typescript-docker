@@ -1,5 +1,4 @@
 import test, { APIRequestContext, APIResponse, Page, Response } from "@playwright/test";
-import { tokenStorage } from "./helpers/token-storage";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "PATCH";
 
@@ -10,6 +9,8 @@ export type RequestParameters = {
   body?: object;
   apiWaitTimeout?: number;
 };
+
+const tokenStorage = new WeakMap<object, string>();
 
 export default class APIDriver {
   constructor(
@@ -34,6 +35,17 @@ export default class APIDriver {
   protected route: string;
   protected method: HttpMethod;
   protected body?: object;
+
+  public static setInitialConfig(options: { apiWaitTimeout: number; expectedStatusCodes: number[]; baseURL: string }) {
+    const { apiWaitTimeout, expectedStatusCodes, baseURL } = options;
+    this.initialApiWaitTimeout = apiWaitTimeout;
+    this.initialExpectedStatusCodes = expectedStatusCodes;
+    this.appBaseURL = baseURL;
+  }
+
+  public static setBearerToken(context: object, token: string) {
+    tokenStorage.set(context, this.formatBearerToken(token));
+  }
 
   public async request<T>(context: APIRequestContext) {
     return await test.step(`Request ${this.method} "${this.route}", expect ${this.expectedStatusCodes.join(
@@ -78,13 +90,6 @@ export default class APIDriver {
     });
   }
 
-  public static setInitialConfig(options: { apiWaitTimeout: number; expectedStatusCodes: number[]; baseURL: string }) {
-    const { apiWaitTimeout, expectedStatusCodes, baseURL } = options;
-    this.initialApiWaitTimeout = apiWaitTimeout;
-    this.initialExpectedStatusCodes = expectedStatusCodes;
-    this.appBaseURL = baseURL;
-  }
-
   protected connectUrlParts(...parts: string[]) {
     const connectedParts = parts
       .filter((part) => part)
@@ -97,6 +102,11 @@ export default class APIDriver {
 
   protected normalizeUrl(url: string) {
     return this.removeLeadingSlash(this.removeTrailingSlash(url));
+  }
+
+  private static formatBearerToken(token: string) {
+    const prefix = "Bearer " as const;
+    return token.startsWith(prefix) ? token : prefix + token;
   }
 
   private removeTrailingSlash(url: string) {

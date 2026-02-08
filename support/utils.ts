@@ -6,6 +6,10 @@ export default class Utils {
 
   static async waitForElementToBeStable(element: Locator) {
     const handle = await element.elementHandle();
+    if (!handle) {
+      throw new Error("Element handle could not be obtained.");
+    }
+
     await handle.waitForElementState("stable");
   }
 

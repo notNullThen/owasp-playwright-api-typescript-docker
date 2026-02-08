@@ -4,9 +4,8 @@ import { APIRequestContext, test as baseTest, request } from "@playwright/test";
 import { acquireAccount } from "../../support/data-management";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import { formatBearerToken } from "../../api-base/helpers/bearer-token";
 import API from "../../api-endpoints/api";
-import { tokenStorage } from "../../api-base/helpers/token-storage";
+import APIDriver from "../../api-base/api-driver";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();
@@ -16,7 +15,7 @@ export * from "@playwright/test";
 // As web-app we use for testing does't work well when authenticated storage is used,
 // we are moving away from documentation and implement autologin in the page fixture,
 // which is still good as we get separate user for each test (still supporting parallelism).
-export const test = baseTest.extend<unknown, { createdUser?: User; loginResponse?: LoginResponse }>({
+export const test = baseTest.extend<object, { createdUser?: User; loginResponse?: LoginResponse }>({
   createdUser: [
     async ({}, use) => {
       await use(await aquireUser(await request.newContext()));
@@ -39,7 +38,7 @@ export const test = baseTest.extend<unknown, { createdUser?: User; loginResponse
   },
 });
 
-async function aquireUser(request?: APIRequestContext) {
+async function aquireUser(request: APIRequestContext) {
   let currentUser = createdUsers.get(test.info().workerIndex);
   if (currentUser) {
     return currentUser;
@@ -50,7 +49,7 @@ async function aquireUser(request?: APIRequestContext) {
   return currentUser;
 }
 
-async function loginToCurrentUser(request?: APIRequestContext) {
+async function loginToCurrentUser(request: APIRequestContext) {
   const currentUser = await aquireUser(request);
   const loggedInResponse = loginResponses.get(test.info().workerIndex);
   if (loggedInResponse) {
@@ -66,11 +65,11 @@ async function loginToCurrentUser(request?: APIRequestContext) {
 
   loginResponses.set(test.info().workerIndex, loginAPIResponse.responseBody);
 
-  const token = formatBearerToken(loginAPIResponse.responseBody.authentication.token);
+  const token = loginAPIResponse.responseBody.authentication.token;
   // It was decided to use own token handling implementation,
   // as somehow "await page.setExtraHTTPHeaders({ Authorization: token });" is not wokring properly:
   // "Basket shows correct details" test fails with 401 response.
-  if (request) tokenStorage.set(request, token);
+  if (request) APIDriver.setBearerToken(request, token);
 
   return loginAPIResponse.responseBody;
 }
