@@ -1,4 +1,4 @@
-import APIFactory, { APIContext } from "../api-base/api-endpoint-base";
+import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
 import { ResponseBase } from "./types/general-types";
 
 type Data = {
@@ -18,7 +18,7 @@ export type SecurityAnswersPayload = {
   SecurityQuestionId: number;
 };
 
-export default class SecurityAnswersAPI extends APIFactory {
+export default class SecurityAnswersAPI extends APIEndpointBase {
   constructor(context: APIContext) {
     super(context, "api/SecurityAnswers");
   }

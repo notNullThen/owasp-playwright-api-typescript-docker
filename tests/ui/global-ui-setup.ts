@@ -6,7 +6,7 @@ import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import APIDriver from "../../api-base/api-driver";
+import APIClient from "../../api-base/api-client";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();
@@ -91,7 +91,7 @@ async function loginToCurrentUser(request: APIRequestContext, loginPage: LoginPa
   // It was decided to use own token handling implementation,
   // as somehow "await page.setExtraHTTPHeaders({ Authorization: token });" is not wokring properly:
   // "Basket shows correct details" test fails with 401 response.
-  APIDriver.setBearerToken(request, token);
+  APIClient.setBearerToken(request, token);
 
   return loginAPIResponse;
 }

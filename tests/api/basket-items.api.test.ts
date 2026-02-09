@@ -1,8 +1,8 @@
-import API from "../../api-endpoints/api";
+import APIEndpoints from "../../api-endpoints/api-endpoints";
 import { expect, test } from "./global-api-setup";
 
 test("User can add item to basket", async ({ request, loginResponse }) => {
-  const api = new API(request);
+  const api = new APIEndpoints(request);
 
   const productsResponse = await api.products.getSearchProducts("").request();
 

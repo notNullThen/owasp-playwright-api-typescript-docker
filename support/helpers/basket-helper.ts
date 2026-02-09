@@ -1,5 +1,5 @@
 import test from "@playwright/test";
-import API from "../../api-endpoints/api";
+import APIEndpoints from "../../api-endpoints/api-endpoints";
 import { APIContext } from "../../api-base/api-endpoint-base";
 
 export const addProductToBasket = async (
@@ -9,7 +9,7 @@ export const addProductToBasket = async (
   const { basketId, productId, quantity } = options;
 
   return await test.step(`Add product with ID '${productId}' to basket with ID '${basketId}'`, async () =>
-    await new API(context).basketItems
+    await new APIEndpoints(context).basketItems
       .postBasketItems({
         BasketId: basketId.toString(),
         ProductId: productId,

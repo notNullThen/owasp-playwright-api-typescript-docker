@@ -1,4 +1,4 @@
-import APIFactory, { APIContext } from "../api-base/api-endpoint-base";
+import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
 
 type Authentication = {
   token: string;
@@ -15,7 +15,7 @@ export type LoginPayload = {
   password: string;
 };
 
-export default class RestUserAPI extends APIFactory {
+export default class RestUserAPI extends APIEndpointBase {
   constructor(context: APIContext) {
     super(context, "rest/user");
   }

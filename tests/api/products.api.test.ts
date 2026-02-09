@@ -1,8 +1,8 @@
-import API from "../../api-endpoints/api";
+import APIEndpoints from "../../api-endpoints/api-endpoints";
 import { expect, test } from "./global-api-setup";
 
 test("Can search for products", async ({ request }) => {
-  const api = new API(request);
+  const api = new APIEndpoints(request);
 
   const response = await test.step("Search for products with query 'apple'", async () =>
     await api.products.getSearchProducts("apple").request());
@@ -18,7 +18,7 @@ test("Can search for products", async ({ request }) => {
 });
 
 test("Searching for non-existent product returns empty list", async ({ request }) => {
-  const api = new API(request);
+  const api = new APIEndpoints(request);
 
   const response = await test.step("Search for products with query 'non-existent-product-12345'", async () =>
     await api.products.getSearchProducts("non-existent-product-12345").request());

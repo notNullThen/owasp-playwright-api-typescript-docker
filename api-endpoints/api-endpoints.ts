@@ -6,7 +6,7 @@ import BasketItemsAPI from "./basket-items-api";
 import RestBasketAPI from "./rest-basket-api";
 import ProductsAPI from "./products-api";
 
-export default class API {
+export default class APIEndpoints {
   constructor(private context: APIContext) {}
 
   users = new UsersAPI(this.context);

@@ -3,7 +3,7 @@ import path from "node:path";
 import dotenv from "dotenv";
 import assert from "node:assert";
 import Utils from "./support/utils";
-import APIDriver from "./api-base/api-driver";
+import APIClient from "./api-base/api-client";
 
 /**
  * Read environment variables from file.
@@ -25,7 +25,7 @@ export const additionalConfig = {
   },
 };
 
-APIDriver.setInitialConfig({
+APIClient.setInitialConfig({
   apiWaitTimeout: additionalConfig.apiWaitTimeout,
   expectedStatusCodes: additionalConfig.expectedAPIResponseCodes,
   baseURL: Utils.getBaseUrl(),

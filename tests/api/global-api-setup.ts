@@ -4,8 +4,8 @@ import { APIRequestContext, test as baseTest, request } from "@playwright/test";
 import { acquireAccount } from "../../support/data-management";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import API from "../../api-endpoints/api";
-import APIDriver from "../../api-base/api-driver";
+import APIEndpoints from "../../api-endpoints/api-endpoints";
+import APIClient from "../../api-base/api-client";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();
@@ -56,7 +56,7 @@ async function loginToCurrentUser(request: APIRequestContext) {
     return loggedInResponse;
   }
 
-  const loginAPIResponse = await new API(request).restUser
+  const loginAPIResponse = await new APIEndpoints(request).restUser
     .postLogin({
       email: currentUser.payload.email,
       password: currentUser.payload.password,
@@ -69,7 +69,7 @@ async function loginToCurrentUser(request: APIRequestContext) {
   // It was decided to use own token handling implementation,
   // as somehow "await page.setExtraHTTPHeaders({ Authorization: token });" is not wokring properly:
   // "Basket shows correct details" test fails with 401 response.
-  if (request) APIDriver.setBearerToken(request, token);
+  if (request) APIClient.setBearerToken(request, token);
 
   return loginAPIResponse.responseBody;
 }

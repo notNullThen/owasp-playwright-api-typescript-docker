@@ -12,16 +12,16 @@ export type RequestParameters = {
 
 const tokenStorage = new WeakMap<object, string>();
 
-export default class APIDriver {
+export default class APIClient {
   constructor(
     protected apiBaseURL: string,
     params: RequestParameters,
   ) {
     this.fullURL = this.connectUrlParts(this.apiBaseURL, params.url || "");
-    this.route = this.fullURL.replace(this.connectUrlParts(APIDriver.appBaseURL), "");
+    this.route = this.fullURL.replace(this.connectUrlParts(APIClient.appBaseURL), "");
     this.method = params.method;
-    this.expectedStatusCodes = params.expectedStatusCodes ?? APIDriver.initialExpectedStatusCodes;
-    this.apiWaitTimeout = params.apiWaitTimeout ?? APIDriver.initialApiWaitTimeout;
+    this.expectedStatusCodes = params.expectedStatusCodes ?? APIClient.initialExpectedStatusCodes;
+    this.apiWaitTimeout = params.apiWaitTimeout ?? APIClient.initialApiWaitTimeout;
     this.body = params.body;
   }
 

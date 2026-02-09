@@ -1,5 +1,5 @@
 import { APIRequestContext, Page } from "@playwright/test";
-import APIDriver, { RequestParameters } from "./api-driver";
+import APIClient, { RequestParameters } from "./api-client";
 
 export type APIContext = Page | APIRequestContext;
 
@@ -12,7 +12,7 @@ export default abstract class APIEndpointBase {
   public action<T>(params: RequestParameters) {
     return {
       request: async () => {
-        return await new APIDriver(this.baseURL, params).request<T>(this.context as APIRequestContext);
+        return await new APIClient(this.baseURL, params).request<T>(this.context as APIRequestContext);
       },
 
       wait: async () => {
@@ -21,7 +21,7 @@ export default abstract class APIEndpointBase {
           throw new Error("You can use wait() only in the context of UI Tests (context should be of 'Page' type)");
         }
 
-        return await new APIDriver(this.baseURL, params).wait<T>(this.context as Page);
+        return await new APIClient(this.baseURL, params).wait<T>(this.context as Page);
       },
     };
   }
