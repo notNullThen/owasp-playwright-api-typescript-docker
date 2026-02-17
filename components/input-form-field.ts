@@ -16,26 +16,6 @@ export default class InputFormField extends FormFieldBase {
     return this.body.getByRole("textbox");
   }
 
-  getByLabel(name: string) {
-    const inputFormField = new InputFormField({
-      componentName: this.componentName,
-      page: this.page,
-      parent: this.parent,
-    });
-    inputFormField.body = this.body.filter({ has: this.page.getByLabel(name, { exact: true }) });
-    return inputFormField;
-  }
-  getByLocator(locator: string) {
-    const formField = new InputFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
-    formField.body = this.body.filter({ has: this.page.locator(locator) });
-    return formField;
-  }
-  getByAriaLabel(name: string) {
-    const formField = new InputFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
-    formField.body = this.body.filter({ has: this.page.getByRole("textbox", { name }) });
-    return formField;
-  }
-
   async fill(value: string | number) {
     await test.step(`Fill "${this.componentName}" input field with value: "${value}"`, async () => {
       await this.input.fill(String(value));
@@ -72,4 +52,14 @@ export default class InputFormField extends FormFieldBase {
       await this.input.press("Enter");
     });
   }
+
+  public override getByName = (name: string) => this.getByNameBase<InputFormField>(name);
+  public override getByText = (text: string) => this.getByTextBase<InputFormField>(text);
+  public override getByIndex = (index: number) => this.getByIndexBase<InputFormField>(index);
+  public override getByLabel = (label: string) => this.getByLabelBase<InputFormField>(label);
+  public override getByAriaLabel = (ariaLabel: string) => this.getByAriaLabelBase<InputFormField>(ariaLabel);
+  public override getByLocator = (locator: string) => this.getByLocatorBase<InputFormField>(locator);
+
+  protected override create = () =>
+    new InputFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
 }

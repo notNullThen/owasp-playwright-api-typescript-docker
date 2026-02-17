@@ -1,7 +1,7 @@
 import test, { expect, Locator, Page } from "@playwright/test";
-import ComponentBase from "./component-base";
+import IterableComponentBase from "./iterable-component-base";
 
-export default class Checkbox extends ComponentBase {
+export default class Checkbox extends IterableComponentBase {
   private checkedClass = "mdc-checkbox--selected";
   private parent?: Locator;
 
@@ -74,9 +74,15 @@ export default class Checkbox extends ComponentBase {
     });
   }
 
-  getByName(name: string) {
-    const checkbox = new Checkbox({ componentName: this.componentName, page: this.page, parent: this.parent });
-    checkbox.body = this.body.filter({ has: this.page.getByText(name, { exact: true }) });
-    return checkbox;
+  public override getByIndex(index: number) {
+    return this.getByIndexBase<Checkbox>(index);
+  }
+
+  public override getByText(text: string) {
+    return this.getByTextBase<Checkbox>(text);
+  }
+
+  protected override create() {
+    return new Checkbox({ componentName: this.componentName, page: this.page, parent: this.parent });
   }
 }

@@ -18,7 +18,7 @@ export default class LoginPage extends PageBase {
     return this.page.getByRole("button", { name: "Login", exact: true });
   }
   get rememberMeCheckbox() {
-    return new Checkbox({ componentName: "Remember Me", page: this.page }).getByName("Remember me");
+    return new Checkbox({ componentName: "Remember Me", page: this.page }).getByText("Remember me");
   }
 
   async login(email: string, password: string, rememberMe = true) {

@@ -17,15 +17,7 @@ export default class DropdownFormField extends FormFieldBase {
     return this.page.getByRole("listbox");
   }
 
-  getByName(name: string) {
-    const formField = new DropdownFormField({
-      componentName: this.componentName,
-      page: this.page,
-      parent: this.parent,
-    });
-    formField.body = this.body.filter({ has: this.page.getByRole("combobox", { name }) });
-    return formField;
-  }
+  getByName = (name: string) => this.getByNameBase<DropdownFormField>(name);
 
   getOptionByName(name: string) {
     return this.options.getByRole("option", { name });
@@ -47,4 +39,13 @@ export default class DropdownFormField extends FormFieldBase {
       await expect(this.input).toHaveText(name);
     });
   }
+
+  public override getByText = (text: string) => super.getByTextBase<DropdownFormField>(text);
+  public override getByIndex = (index: number) => super.getByIndexBase<DropdownFormField>(index);
+  public override getByLabel = (label: string) => super.getByLabelBase<DropdownFormField>(label);
+  public override getByAriaLabel = (ariaLabel: string) => super.getByAriaLabelBase<DropdownFormField>(ariaLabel);
+  public override getByLocator = (locator: string) => super.getByLocatorBase<DropdownFormField>(locator);
+
+  protected override create = () =>
+    new DropdownFormField({ componentName: this.componentName, page: this.page, parent: this.parent });
 }
