@@ -17,7 +17,7 @@ test("Can search and add product to basket", async ({ page }) => {
 
   await page.reload();
   await basketPage.goto();
-  const expectedProduct = await basketPage.products.getByName(product.name);
+  const expectedProduct = await basketPage.basketTable.rows.getByProductName(product.name);
   await expect(expectedProduct.body).toBeVisible();
 });
 
@@ -33,7 +33,7 @@ test("Basket shows correct details", async ({ page, loginResponse }) => {
   await addProductToBasket({ basketId, productId: productResponse.id, quantity }, page.request);
 
   await basketPage.goto();
-  const row = basketPage.products.getByIndex(0);
+  const row = basketPage.basketTable.rows.getByIndex(0);
 
   const rowProductName = await row.getProductName();
   test.expect(rowProductName).toBe(product.name);

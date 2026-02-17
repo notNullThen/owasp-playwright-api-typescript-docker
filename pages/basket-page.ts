@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import ProductRow from "../components/product-row";
+import BasketTable from "../components/product-row";
 import PageBase from "./page-base";
 import Utils from "../support/utils";
 
@@ -8,7 +8,7 @@ export default class BasketPage extends PageBase {
     super(page, "#/basket");
   }
 
-  products = new ProductRow(this.page);
+  basketTable = new BasketTable(this.page);
 
   get price() {
     return this.page.locator("#price");

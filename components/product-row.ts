@@ -1,15 +1,16 @@
 import { Page } from "@playwright/test";
-import ComponentBase from "./component-base";
 import Utils from "../support/utils";
+import TableBase, { RowBase } from "./table-base";
 
-export default class ProductRow extends ComponentBase {
+export default class BasketTable extends TableBase {
   constructor(page: Page) {
     super("Product Row", page.locator("app-purchase-basket mat-row"));
   }
 
-  get cells() {
-    return this.body.getByRole("cell");
-  }
+  rows = new Row(this.componentName, this.body);
+}
+
+class Row extends RowBase {
   get imageCell() {
     return this.cells.nth(0);
   }
@@ -26,42 +27,20 @@ export default class ProductRow extends ComponentBase {
     return this.cells.nth(4);
   }
 
-  async getProductName() {
-    return this.nameCell.innerText();
-  }
   async getQuantityValue() {
     const quantityText = await this.quantityCell.innerText();
     return Number(quantityText);
   }
+
   async getPriceValue() {
     const priceText = await this.priceCell.innerText();
     return Utils.getPriceFromText(priceText);
   }
 
-  async getByName(productName: string) {
-    const index = await this.getIndexByName(productName);
-    return this.getByIndex(index);
-  }
+  getProductName = async () => this.nameCell.innerText();
+  getByProductName = async (productName: string) => this.getByCellValue(productName, this.nameCell);
 
-  async getIndexByName(productName: string): Promise<number> {
-    const rowsCount = await this.count();
-
-    for (let i = 0; i < rowsCount; i++) {
-      const row = new ProductRow(this.page).getByIndex(i);
-      const actualProductName = await row.nameCell.innerText();
-
-      if (productName === actualProductName) {
-        return i;
-      }
-    }
-    throw new Error(`Product with name '${productName}' not found in basket`);
-  }
-
-  getByIndex(index: number) {
-    {
-      const row = new ProductRow(this.page);
-      row.body = this.body.nth(index);
-      return row;
-    }
-  }
+  public getByText = (text: string) => this.getByTextBase<Row>(text);
+  public getByIndex = (index: number) => this.getByIndexBase<Row>(index);
+  protected create = () => new Row(this.componentName, this.body);
 }
