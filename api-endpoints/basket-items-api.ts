@@ -28,6 +28,6 @@ export default class BasketItemsAPI extends APIEndpointBase {
   }
 
   deleteBasketItems(userId?: string) {
-    return this.action({ method: "DELETE", url: userId ? userId : null });
+    return this.action({ method: "DELETE", url: userId });
   }
 }
