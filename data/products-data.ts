@@ -11,11 +11,11 @@ export const productsData = {
     description: "Made from blended Raspberry Pi, water and sugar.",
     price: 4.99,
     soldOut: false,
-  } as Product,
+  },
   bananaJuice: {
     name: "Banana Juice (1000ml)",
     description: "Monkeys love it the most.",
     price: 1.99,
     soldOut: true,
   },
-};
+} satisfies Record<string, Product>;
