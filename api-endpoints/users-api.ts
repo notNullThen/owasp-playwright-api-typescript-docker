@@ -1,4 +1,4 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import { APIEndpointBase, APIContext } from "simple-api-playwright";
 import CreatedData from "../data/created-data";
 import { ResponseBase } from "./types/general-types";
 

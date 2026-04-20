@@ -1,6 +1,6 @@
 import test from "@playwright/test";
 import APIEndpoints from "../../api-endpoints/api-endpoints";
-import { APIContext } from "../../api-base/api-endpoint-base";
+import { APIContext } from "simple-api-playwright";
 
 export const addProductToBasket = async (
   options: { basketId: number; productId: number; quantity: number },

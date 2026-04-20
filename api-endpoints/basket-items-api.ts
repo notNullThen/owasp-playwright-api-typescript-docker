@@ -1,4 +1,4 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import { APIEndpointBase, APIContext } from "simple-api-playwright";
 import { ResponseBase } from "./types/general-types";
 
 type BasketItemsPayload = {

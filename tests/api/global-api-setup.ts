@@ -5,7 +5,7 @@ import { acquireAccount } from "../../support/data-management";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
 import APIEndpoints from "../../api-endpoints/api-endpoints";
-import APIClient from "../../api-base/api-client";
+import { APIClient } from "simple-api-playwright";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();

@@ -1,4 +1,4 @@
-import APIEndpointBase, { APIContext } from "../api-base/api-endpoint-base";
+import { APIEndpointBase, APIContext } from "simple-api-playwright";
 
 type Authentication = {
   token: string;

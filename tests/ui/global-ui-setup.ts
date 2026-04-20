@@ -6,7 +6,7 @@ import LoginPage from "../../pages/login-page";
 import Utils from "../../support/utils";
 import { User } from "../../api-endpoints/users-api";
 import { LoginResponse } from "../../api-endpoints/rest-user-api";
-import APIClient from "../../api-base/api-client";
+import { APIClient } from "simple-api-playwright";
 
 const createdUsers = new Map<number, User>();
 const loginResponses = new Map<number, LoginResponse>();

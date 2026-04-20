@@ -3,7 +3,7 @@ import path from "node:path";
 import dotenv from "dotenv";
 import assert from "node:assert";
 import Utils from "./support/utils";
-import APIClient from "./api-base/api-client";
+import { APIClient } from "simple-api-playwright";
 
 /**
  * Read environment variables from file.

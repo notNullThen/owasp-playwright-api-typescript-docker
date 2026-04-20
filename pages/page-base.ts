@@ -4,14 +4,18 @@ import ProductTile from "../components/product-tile";
 import APIEndpoints from "../api-endpoints/api-endpoints";
 
 export default abstract class PageBase {
+  api: APIEndpoints;
+  header: Header;
+  productTiles: ProductTile;
+
   constructor(
     protected page: Page,
     protected url: string,
-  ) {}
-
-  api = new APIEndpoints(this.page);
-  header = new Header(this.page);
-  productTiles = new ProductTile(this.page);
+  ) {
+    this.api = new APIEndpoints(this.page);
+    this.header = new Header(this.page);
+    this.productTiles = new ProductTile(this.page);
+  }
 
   get headerText() {
     return this.page.locator(".heading");
