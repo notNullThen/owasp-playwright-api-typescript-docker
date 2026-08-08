@@ -57,11 +57,13 @@ export default class RegistrationPage extends PageBase {
 
   async submit() {
     return await test.step("Submit registration form", async () => {
-      const [, userResponse] = await Promise.all([
-        this.registerButton.click(),
-        this.api.users.postUser().wait(),
-        this.api.securityAnswers.postSecurityAnswers().wait(),
-      ]);
+      const userResponseWait = this.api.users.postUser().wait();
+      const securityAnswersResponseWait = this.api.securityAnswers.postSecurityAnswers().wait();
+
+      await this.registerButton.click();
+
+      const userResponse = await userResponseWait;
+      await securityAnswersResponseWait;
       await this.page.waitForURL("**/login");
 
       return userResponse;

@@ -26,10 +26,10 @@ export default class ProductTile extends ComponentBase {
 
   async addToBasket() {
     return await test.step(`Add product '${await this.itemName.innerText()}' to basket`, async () => {
-      const [, basketItemsResponse] = await Promise.all([
-        this.addToBasketButton.click(),
-        this.api.basketItems.postBasketItems().wait(),
-      ]);
+      const basketItemsResponseWait = this.api.basketItems.postBasketItems().wait();
+
+      await this.addToBasketButton.click();
+      const basketItemsResponse = await basketItemsResponseWait;
 
       return basketItemsResponse;
     });

@@ -15,7 +15,11 @@ export default class BasketPage extends PageBase {
   }
 
   async goto() {
-    const [, basketResponse] = await Promise.all([super.goto(), this.api.restBasket.getBasket().wait()]);
+    const basketResponseWait = this.api.restBasket.getBasket().wait();
+
+    await super.goto();
+    const basketResponse = await basketResponseWait;
+
     return basketResponse;
   }
 

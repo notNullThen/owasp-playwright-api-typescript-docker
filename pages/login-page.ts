@@ -28,7 +28,10 @@ export default class LoginPage extends PageBase {
       await this.rememberMeCheckbox.check();
     }
 
-    const [, response] = await Promise.all([this.loginButton.click(), this.api.restUser.postLogin().wait()]);
+    const responseWait = this.api.restUser.postLogin().wait();
+
+    await this.loginButton.click();
+    const response = await responseWait;
 
     await this.header.accountMenu.open();
     await expect(this.header.accountMenu.userProfileItem).toContainText(email);

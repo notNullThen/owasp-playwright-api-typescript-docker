@@ -114,9 +114,9 @@ API layer lives in `api-base/` and is designed so endpoints are defined once and
 Example (wait for UI-triggered API call):
 
 ```ts
-const loginResponseTask = api.restUser.postLogin().wait();
-await Promise.all([loginButton.click(), loginResponseTask]);
-const loginResponse = (await loginResponseTask).responseBody;
+const loginResponseWait = api.restUser.postLogin().wait();
+await loginButton.click();
+const loginResponse = (await loginResponseWait).responseBody;
 ```
 
 ## Where to look
